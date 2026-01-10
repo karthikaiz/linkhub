@@ -1,6 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
 import { db } from './db'
 
@@ -13,6 +14,10 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
   },
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
       name: 'credentials',
       credentials: {
@@ -53,6 +58,57 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === 'google') {
+        const existingUser = await db.user.findUnique({
+          where: { email: user.email! },
+        })
+
+        if (!existingUser) {
+          // Generate username from email
+          const baseUsername = user.email!.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '')
+          let username = baseUsername
+          let counter = 1
+
+          // Ensure unique username
+          while (await db.user.findUnique({ where: { username } })) {
+            username = `${baseUsername}${counter}`
+            counter++
+          }
+
+          // Create user with profile
+          await db.user.create({
+            data: {
+              email: user.email!,
+              name: user.name,
+              image: user.image,
+              username,
+              profile: {
+                create: {
+                  title: user.name || username,
+                },
+              },
+            },
+          })
+        } else if (!existingUser.username) {
+          // Update existing user with username if missing
+          const baseUsername = user.email!.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '')
+          let username = baseUsername
+          let counter = 1
+
+          while (await db.user.findUnique({ where: { username } })) {
+            username = `${baseUsername}${counter}`
+            counter++
+          }
+
+          await db.user.update({
+            where: { id: existingUser.id },
+            data: { username },
+          })
+        }
+      }
+      return true
+    },
     async session({ token, session }) {
       if (token) {
         session.user.id = token.id as string
@@ -63,7 +119,7 @@ export const authOptions: NextAuthOptions = {
 
       return session
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email!,
