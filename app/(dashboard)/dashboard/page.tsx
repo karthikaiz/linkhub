@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { CopyButton } from '@/components/ui/copy-button'
 import Link from 'next/link'
 import { BarChart3, Link as LinkIcon, Eye, MousePointer } from 'lucide-react'
 import { formatNumber } from '@/lib/utils'
@@ -162,17 +163,7 @@ export default async function DashboardPage() {
               <span className="font-mono">
                 {process.env.NEXT_PUBLIC_APP_URL}/{session.user.username}
               </span>
-              <Button
-                size="sm"
-                className="bg-white text-primary-600 hover:bg-gray-100"
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `${process.env.NEXT_PUBLIC_APP_URL}/${session.user.username}`
-                  )
-                }}
-              >
-                Copy
-              </Button>
+              <CopyButton text={`${process.env.NEXT_PUBLIC_APP_URL}/${session.user.username}`} />
             </div>
           </CardContent>
         </Card>
