@@ -17,6 +17,7 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
     CredentialsProvider({
       name: 'credentials',
@@ -57,41 +58,43 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  events: {
+    async createUser({ user }) {
+      // Generate username for new users (OAuth)
+      const baseUsername = user.email!.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '')
+      let username = baseUsername
+      let counter = 1
+
+      // Ensure unique username
+      while (await db.user.findUnique({ where: { username } })) {
+        username = `${baseUsername}${counter}`
+        counter++
+      }
+
+      // Update user with username and create profile
+      await db.user.update({
+        where: { id: user.id },
+        data: {
+          username,
+          profile: {
+            create: {
+              title: user.name || username,
+            },
+          },
+        },
+      })
+    },
+  },
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
+        // Check if user exists and has username, if not add it
         const existingUser = await db.user.findUnique({
           where: { email: user.email! },
+          include: { profile: true },
         })
 
-        if (!existingUser) {
-          // Generate username from email
-          const baseUsername = user.email!.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '')
-          let username = baseUsername
-          let counter = 1
-
-          // Ensure unique username
-          while (await db.user.findUnique({ where: { username } })) {
-            username = `${baseUsername}${counter}`
-            counter++
-          }
-
-          // Create user with profile
-          await db.user.create({
-            data: {
-              email: user.email!,
-              name: user.name,
-              image: user.image,
-              username,
-              profile: {
-                create: {
-                  title: user.name || username,
-                },
-              },
-            },
-          })
-        } else if (!existingUser.username) {
-          // Update existing user with username if missing
+        if (existingUser && !existingUser.username) {
           const baseUsername = user.email!.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '')
           let username = baseUsername
           let counter = 1
@@ -104,6 +107,15 @@ export const authOptions: NextAuthOptions = {
           await db.user.update({
             where: { id: existingUser.id },
             data: { username },
+          })
+        }
+
+        if (existingUser && !existingUser.profile) {
+          await db.profile.create({
+            data: {
+              userId: existingUser.id,
+              title: existingUser.name || existingUser.username || 'My Profile',
+            },
           })
         }
       }
@@ -119,7 +131,7 @@ export const authOptions: NextAuthOptions = {
 
       return session
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger }) {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email!,
