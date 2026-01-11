@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 // Only initialize Stripe if the secret key is available
 export const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2023-10-16',
+      apiVersion: '2024-12-18.acacia' as any,
       typescript: true,
     })
   : (null as unknown as Stripe)

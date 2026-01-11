@@ -188,21 +188,8 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
       }
     }
     if (link.type === 'tiktok' && link.embedUrl) {
-      return (
-        <div className="w-full rounded-2xl overflow-hidden bg-black shadow-2xl">
-          <blockquote
-            className="tiktok-embed"
-            cite={link.embedUrl}
-            data-video-id={extractTikTokId(link.embedUrl)}
-          >
-            <a href={link.embedUrl} target="_blank" rel="noopener noreferrer"
-              className="block py-4 px-6 text-center text-white"
-            >
-              View on TikTok
-            </a>
-          </blockquote>
-        </div>
-      )
+      // TikTok doesn't have a simple iframe embed, so we show a styled link card
+      return null // Will be rendered as a regular button with TikTok styling
     }
     return null
   }
@@ -440,10 +427,13 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
                   </div>
                 )
               }
+              // For TikTok, use embedUrl as the link destination
+              const linkUrl = link.type === 'tiktok' && link.embedUrl ? link.embedUrl : link.url
+
               return (
                 <button
                   key={link.id}
-                  onClick={() => handleLinkClick(link.id, link.url)}
+                  onClick={() => handleLinkClick(link.id, linkUrl)}
                   className={`group w-full py-4 px-6 text-center font-semibold transition-all duration-300 ${getButtonClass()}`}
                   style={{
                     backgroundColor: profile.buttonColor,
