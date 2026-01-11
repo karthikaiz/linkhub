@@ -116,18 +116,18 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
             <Card key={stat.title}>
-              <CardContent className="flex items-center gap-4 p-6">
-                <div className={`p-3 rounded-full ${stat.color}`}>
-                  <Icon className="w-5 h-5" />
+              <CardContent className="flex items-center gap-2 sm:gap-4 p-3 sm:p-6">
+                <div className={`p-2 sm:p-3 rounded-full ${stat.color} shrink-0`}>
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">{stat.title}</p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-sm text-gray-600 truncate">{stat.title}</p>
+                  <p className="text-lg sm:text-2xl font-bold">{stat.value}</p>
                 </div>
               </CardContent>
             </Card>
@@ -135,30 +135,30 @@ export default async function AnalyticsPage() {
         })}
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
         {/* Top Links */}
         <Card>
-          <CardHeader>
-            <CardTitle>Top Performing Links</CardTitle>
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="text-base sm:text-lg">Top Performing Links</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             {topLinks.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">
+              <p className="text-gray-500 text-center py-8 text-sm">
                 No link data yet. Share your page to start seeing analytics!
               </p>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {topLinks.map((link, index) => (
-                  <div key={link.id} className="flex items-center gap-4">
-                    <span className="text-2xl font-bold text-gray-300 w-8">
+                  <div key={link.id} className="flex items-center gap-2 sm:gap-4">
+                    <span className="text-xl sm:text-2xl font-bold text-gray-300 w-6 sm:w-8 shrink-0">
                       {index + 1}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">{link.title}</p>
-                      <p className="text-sm text-gray-500 truncate">{link.url}</p>
+                      <p className="font-medium truncate text-sm sm:text-base">{link.title}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 truncate">{link.url}</p>
                     </div>
-                    <div className="flex items-center gap-1 text-sm font-medium">
-                      <MousePointer className="w-4 h-4 text-gray-400" />
+                    <div className="flex items-center gap-1 text-xs sm:text-sm font-medium shrink-0">
+                      <MousePointer className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
                       {formatNumber(link.clicks)}
                     </div>
                   </div>
@@ -170,16 +170,16 @@ export default async function AnalyticsPage() {
 
         {/* Device Breakdown */}
         <Card>
-          <CardHeader>
-            <CardTitle>Devices (Last 30 days)</CardTitle>
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="text-base sm:text-lg">Devices (Last 30 days)</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             {deviceStats.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">
+              <p className="text-gray-500 text-center py-8 text-sm">
                 No device data yet.
               </p>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {deviceStats.map((device) => {
                   const Icon = deviceIcons[device.device || 'desktop'] || Globe
                   const percentage = Math.round(
@@ -187,14 +187,14 @@ export default async function AnalyticsPage() {
                   )
                   return (
                     <div key={device.device} className="space-y-2">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center gap-2">
                           <Icon className="w-4 h-4 text-gray-500" />
                           <span className="capitalize">
                             {device.device || 'Unknown'}
                           </span>
                         </div>
-                        <span className="text-sm text-gray-500">
+                        <span className="text-gray-500">
                           {percentage}%
                         </span>
                       </div>
@@ -214,16 +214,16 @@ export default async function AnalyticsPage() {
 
         {/* Browser Breakdown */}
         <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Browsers (Last 30 days)</CardTitle>
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="text-base sm:text-lg">Browsers (Last 30 days)</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             {browserStats.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">
+              <p className="text-gray-500 text-center py-8 text-sm">
                 No browser data yet.
               </p>
             ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                 {browserStats.map((browser) => {
                   const percentage = Math.round(
                     (browser._count.id / totalBrowserViews) * 100
@@ -231,11 +231,11 @@ export default async function AnalyticsPage() {
                   return (
                     <div
                       key={browser.browser}
-                      className="p-4 bg-gray-50 rounded-lg"
+                      className="p-3 sm:p-4 bg-gray-50 rounded-lg"
                     >
-                      <p className="font-medium">{browser.browser || 'Unknown'}</p>
-                      <p className="text-2xl font-bold">{percentage}%</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-sm sm:text-base truncate">{browser.browser || 'Unknown'}</p>
+                      <p className="text-xl sm:text-2xl font-bold">{percentage}%</p>
+                      <p className="text-xs sm:text-sm text-gray-500">
                         {browser._count.id} visits
                       </p>
                     </div>
