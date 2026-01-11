@@ -253,22 +253,18 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
               </div>
             </div>
             <Input
-              placeholder="Link Title (e.g., My Website)"
+              placeholder="Title (e.g., My Latest Video)"
               value={newLink.title}
               onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
             />
-            <Input
-              placeholder="URL (e.g., https://example.com)"
-              value={newLink.url}
-              onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
-            />
-            {newLink.type !== 'link' && (
+            {newLink.type === 'link' ? (
+              <Input
+                placeholder="URL (e.g., https://example.com)"
+                value={newLink.url}
+                onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
+              />
+            ) : (
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  {newLink.type === 'youtube' && 'YouTube Video URL'}
-                  {newLink.type === 'spotify' && 'Spotify URL (track, album, or playlist)'}
-                  {newLink.type === 'tiktok' && 'TikTok Video URL'}
-                </label>
                 <Input
                   placeholder={
                     newLink.type === 'youtube'
@@ -278,7 +274,7 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
                       : 'https://tiktok.com/@user/video/...'
                   }
                   value={newLink.embedUrl}
-                  onChange={(e) => setNewLink({ ...newLink, embedUrl: e.target.value })}
+                  onChange={(e) => setNewLink({ ...newLink, embedUrl: e.target.value, url: e.target.value })}
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   This will be embedded directly on your profile
@@ -424,23 +420,32 @@ function LinkCard({
             </div>
           </div>
           <Input
-            placeholder="Link Title"
+            placeholder="Title"
             value={editData.title}
             onChange={(e) => setEditData({ ...editData, title: e.target.value })}
           />
-          <Input
-            placeholder="URL"
-            value={editData.url}
-            onChange={(e) => setEditData({ ...editData, url: e.target.value })}
-          />
-          {editData.type !== 'link' && (
+          {editData.type === 'link' ? (
+            <Input
+              placeholder="URL"
+              value={editData.url}
+              onChange={(e) => setEditData({ ...editData, url: e.target.value })}
+            />
+          ) : (
             <div>
-              <label className="block text-sm font-medium mb-2">Embed URL</label>
               <Input
-                placeholder="Embed URL for the content"
+                placeholder={
+                  editData.type === 'youtube'
+                    ? 'https://youtube.com/watch?v=...'
+                    : editData.type === 'spotify'
+                    ? 'https://open.spotify.com/track/...'
+                    : 'https://tiktok.com/@user/video/...'
+                }
                 value={editData.embedUrl}
-                onChange={(e) => setEditData({ ...editData, embedUrl: e.target.value })}
+                onChange={(e) => setEditData({ ...editData, embedUrl: e.target.value, url: e.target.value })}
               />
+              <p className="text-xs text-gray-500 mt-1">
+                This will be embedded directly on your profile
+              </p>
             </div>
           )}
           <div className="flex gap-2">
