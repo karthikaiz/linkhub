@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
@@ -39,6 +39,8 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
   const [editingId, setEditingId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [newLink, setNewLink] = useState({ title: '', url: '' })
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
   const canAddMore = links.length < maxLinks
 
@@ -128,6 +130,68 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
     await handleUpdateLink(id, { isActive: !isActive })
   }
 
+  // Drag and Drop handlers
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index)
+  }
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    if (draggedIndex === null || draggedIndex === index) return
+    setDragOverIndex(index)
+  }
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null)
+  }
+
+  const handleDrop = async (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault()
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null)
+      setDragOverIndex(null)
+      return
+    }
+
+    // Reorder links
+    const newLinks = [...links]
+    const [draggedLink] = newLinks.splice(draggedIndex, 1)
+    newLinks.splice(dropIndex, 0, draggedLink)
+
+    // Update order values
+    const reorderedLinks = newLinks.map((link, index) => ({
+      ...link,
+      order: index,
+    }))
+
+    setLinks(reorderedLinks)
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+
+    // Save new order to backend
+    try {
+      await Promise.all(
+        reorderedLinks.map((link) =>
+          fetch(`/api/links/${link.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ order: link.order }),
+          })
+        )
+      )
+      toast.success('Links reordered!')
+    } catch (error) {
+      toast.error('Failed to save order')
+      // Revert on error
+      setLinks(links)
+    }
+  }
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+  }
+
   return (
     <div className="space-y-4">
       {/* Add Link Button */}
@@ -190,18 +254,35 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
             </CardContent>
           </Card>
         ) : (
-          links.map((link) => (
-            <LinkCard
+          links.map((link, index) => (
+            <div
               key={link.id}
-              link={link}
-              isEditing={editingId === link.id}
-              onEdit={() => setEditingId(link.id)}
-              onCancelEdit={() => setEditingId(null)}
-              onUpdate={(data) => handleUpdateLink(link.id, data)}
-              onDelete={() => handleDeleteLink(link.id)}
-              onToggleActive={() => handleToggleActive(link.id, link.isActive)}
-              isLoading={isLoading}
-            />
+              draggable={!editingId}
+              onDragStart={() => handleDragStart(index)}
+              onDragOver={(e) => handleDragOver(e, index)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, index)}
+              onDragEnd={handleDragEnd}
+              className={`transition-all ${
+                draggedIndex === index ? 'opacity-50' : ''
+              } ${
+                dragOverIndex === index
+                  ? 'border-t-2 border-primary-500 pt-2'
+                  : ''
+              }`}
+            >
+              <LinkCard
+                link={link}
+                isEditing={editingId === link.id}
+                onEdit={() => setEditingId(link.id)}
+                onCancelEdit={() => setEditingId(null)}
+                onUpdate={(data) => handleUpdateLink(link.id, data)}
+                onDelete={() => handleDeleteLink(link.id)}
+                onToggleActive={() => handleToggleActive(link.id, link.isActive)}
+                isLoading={isLoading}
+                isDragging={draggedIndex !== null}
+              />
+            </div>
           ))
         )}
       </div>
@@ -235,6 +316,7 @@ interface LinkCardProps {
   onDelete: () => void
   onToggleActive: () => void
   isLoading: boolean
+  isDragging: boolean
 }
 
 function LinkCard({
@@ -246,6 +328,7 @@ function LinkCard({
   onDelete,
   onToggleActive,
   isLoading,
+  isDragging,
 }: LinkCardProps) {
   const [editData, setEditData] = useState({ title: link.title, url: link.url })
 
@@ -286,7 +369,11 @@ function LinkCard({
     <Card className={!link.isActive ? 'opacity-60' : ''}>
       <CardContent className="p-4">
         <div className="flex items-center gap-4">
-          <GripVertical className="w-5 h-5 text-gray-400 cursor-grab" />
+          <GripVertical
+            className={`w-5 h-5 text-gray-400 ${
+              isDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
+          />
           <div className="flex-1 min-w-0">
             <p className="font-medium truncate">{link.title}</p>
             <p className="text-sm text-gray-500 truncate">{link.url}</p>

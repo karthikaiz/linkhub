@@ -157,16 +157,16 @@ export default function RegisterPage() {
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Username</label>
-              <div className="flex items-center">
-                <span className="bg-gray-100 border border-r-0 border-gray-300 rounded-l-md px-3 py-2 text-gray-500 text-sm">
+              <div className="flex">
+                <span className="inline-flex items-center bg-gray-100 border border-r-0 border-gray-300 rounded-l-md px-3 text-gray-500 text-sm h-10">
                   linkhub.com/
                 </span>
-                <Input
+                <input
                   type="text"
                   placeholder="yourname"
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value.toLowerCase() })}
-                  className="rounded-l-none"
+                  className={`flex h-10 w-full rounded-r-md rounded-l-none border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.username ? 'border-red-500 focus:ring-red-500' : ''}`}
                   required
                 />
               </div>

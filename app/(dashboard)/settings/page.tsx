@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { getUserSubscriptionPlan, PLANS } from '@/lib/stripe'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { SubscriptionButton } from '@/components/dashboard/subscription-button'
+import { DeleteAccountButton } from '@/components/dashboard/delete-account-button'
 import { formatDate } from '@/lib/utils'
 
 export default async function SettingsPage() {
@@ -157,9 +158,7 @@ export default async function SettingsPage() {
           <p className="text-sm text-gray-600 mb-4">
             Once you delete your account, there is no going back. Please be certain.
           </p>
-          <button className="px-4 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50 transition-colors">
-            Delete Account
-          </button>
+          <DeleteAccountButton />
         </CardContent>
       </Card>
     </div>

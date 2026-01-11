@@ -105,19 +105,28 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
 
         {/* Links */}
         <div className="space-y-3">
-          {links.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => handleLinkClick(link.id, link.url)}
-              className={`w-full py-4 px-6 text-center font-medium transition-all hover:scale-105 hover:shadow-lg ${getButtonClass()}`}
-              style={{
-                backgroundColor: profile.buttonColor,
-                color: profile.textColor,
-              }}
+          {links.length === 0 ? (
+            <p
+              className="text-center py-8 opacity-50"
+              style={{ color: profileTextColor }}
             >
-              {link.title}
-            </button>
-          ))}
+              No links yet
+            </p>
+          ) : (
+            links.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => handleLinkClick(link.id, link.url)}
+                className={`w-full py-4 px-6 text-center font-medium transition-all hover:scale-105 hover:shadow-lg ${getButtonClass()}`}
+                style={{
+                  backgroundColor: profile.buttonColor,
+                  color: profile.textColor,
+                }}
+              >
+                {link.title}
+              </button>
+            ))
+          )}
         </div>
 
         {/* Branding */}
