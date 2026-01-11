@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { writeFile, mkdir } from 'fs/promises'
-import path from 'path'
 
 export async function POST(request: Request) {
   try {
@@ -24,36 +22,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'File must be an image' }, { status: 400 })
     }
 
-    // Validate file size (5MB max)
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File must be less than 5MB' }, { status: 400 })
+    // Validate file size (2MB max for base64 storage)
+    if (file.size > 2 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File must be less than 2MB' }, { status: 400 })
     }
 
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
-    await mkdir(uploadsDir, { recursive: true })
-
-    // Generate unique filename
-    const ext = file.name.split('.').pop() || 'jpg'
-    const filename = `${session.user.id}-${Date.now()}.${ext}`
-    const filepath = path.join(uploadsDir, filename)
-
-    // Write file
-    await writeFile(filepath, buffer)
-
-    // Generate URL
-    const url = `/uploads/${filename}`
+    // Convert to base64 data URL
+    const base64 = buffer.toString('base64')
+    const dataUrl = `data:${file.type};base64,${base64}`
 
     // Update user's image in database
     await db.user.update({
       where: { id: session.user.id },
-      data: { image: url },
+      data: { image: dataUrl },
     })
 
-    return NextResponse.json({ url })
+    return NextResponse.json({ url: dataUrl })
   } catch (error) {
     console.error('Upload error:', error)
     return NextResponse.json(
