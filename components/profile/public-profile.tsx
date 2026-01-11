@@ -25,6 +25,17 @@ interface PublicProfileProps {
 export function PublicProfile({ user, profile, links }: PublicProfileProps) {
   const [clickedLinks, setClickedLinks] = useState<Set<string>>(new Set())
 
+  const getInitials = (name: string | null, username: string) => {
+    if (name) {
+      const parts = name.trim().split(' ').filter(Boolean)
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+      }
+      return name.slice(0, 2).toUpperCase()
+    }
+    return username.slice(0, 2).toUpperCase()
+  }
+
   const getButtonClass = () => {
     switch (profile.buttonStyle) {
       case 'rounded':
@@ -75,7 +86,15 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
     >
       <div className="w-full max-w-md">
         {/* Avatar */}
-        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary-400 to-purple-500 mx-auto mb-4 shadow-lg" />
+        <div
+          className="w-24 h-24 rounded-full mx-auto mb-4 shadow-lg flex items-center justify-center text-3xl font-bold"
+          style={{
+            backgroundColor: profile.buttonColor,
+            color: profile.textColor,
+          }}
+        >
+          {getInitials(user.name, user.username)}
+        </div>
 
         {/* Name */}
         <h1

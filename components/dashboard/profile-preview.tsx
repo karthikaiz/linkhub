@@ -21,6 +21,17 @@ export function ProfilePreview({
   textColor,
   buttonStyle,
 }: ProfilePreviewProps) {
+  const getInitials = (name: string, fallback: string) => {
+    if (name) {
+      const parts = name.trim().split(' ').filter(Boolean)
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+      }
+      return name.slice(0, 2).toUpperCase()
+    }
+    return fallback.slice(0, 2).toUpperCase()
+  }
+
   const getButtonClass = () => {
     switch (buttonStyle) {
       case 'rounded':
@@ -51,7 +62,12 @@ export function ProfilePreview({
       style={{ backgroundColor }}
     >
       {/* Avatar */}
-      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-400 to-purple-500 mx-auto mb-4" />
+      <div
+        className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-bold"
+        style={{ backgroundColor: buttonColor, color: textColor }}
+      >
+        {getInitials(title, username)}
+      </div>
 
       {/* Name */}
       <h2
