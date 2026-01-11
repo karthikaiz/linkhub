@@ -23,11 +23,13 @@ export function SubscriptionButton({ isPro }: SubscriptionButtonProps) {
 
       if (data.url) {
         window.location.href = data.url
+      } else if (response.status === 503) {
+        toast.error('Payments are not configured yet. Please contact the administrator.')
       } else {
         throw new Error(data.error || 'Something went wrong')
       }
     } catch (error: any) {
-      toast.error(error.message)
+      toast.error(error.message || 'Failed to start checkout')
     } finally {
       setIsLoading(false)
     }
