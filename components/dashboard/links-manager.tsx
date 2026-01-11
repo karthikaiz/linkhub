@@ -25,7 +25,16 @@ interface LinkItem {
   isActive: boolean
   clicks: number
   order: number
+  type: string
+  embedUrl: string | null
 }
+
+const LINK_TYPES = [
+  { id: 'link', name: 'Regular Link', icon: '🔗' },
+  { id: 'youtube', name: 'YouTube Video', icon: '📺' },
+  { id: 'spotify', name: 'Spotify', icon: '🎵' },
+  { id: 'tiktok', name: 'TikTok', icon: '🎬' },
+]
 
 interface LinksManagerProps {
   initialLinks: LinkItem[]
@@ -38,7 +47,7 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
   const [isAdding, setIsAdding] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [newLink, setNewLink] = useState({ title: '', url: '' })
+  const [newLink, setNewLink] = useState({ title: '', url: '', type: 'link', embedUrl: '' })
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
@@ -55,6 +64,12 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
       url = 'https://' + url
     }
 
+    // For embed types, also ensure embedUrl is set
+    let embedUrl = newLink.embedUrl || url
+    if (newLink.type !== 'link' && !embedUrl.startsWith('http')) {
+      embedUrl = 'https://' + embedUrl
+    }
+
     setIsLoading(true)
     try {
       const response = await fetch('/api/links', {
@@ -64,6 +79,8 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
           title: newLink.title,
           url,
           order: links.length,
+          type: newLink.type,
+          embedUrl: newLink.type !== 'link' ? embedUrl : null,
         }),
       })
 
@@ -74,7 +91,7 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
 
       const link = await response.json()
       setLinks([...links, link])
-      setNewLink({ title: '', url: '' })
+      setNewLink({ title: '', url: '', type: 'link', embedUrl: '' })
       setIsAdding(false)
       toast.success('Link added!')
     } catch (error: any) {
@@ -215,6 +232,26 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
       {isAdding && (
         <Card>
           <CardContent className="p-4 space-y-4">
+            {/* Link Type Selector */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Link Type</label>
+              <div className="grid grid-cols-4 gap-2">
+                {LINK_TYPES.map((type) => (
+                  <button
+                    key={type.id}
+                    onClick={() => setNewLink({ ...newLink, type: type.id })}
+                    className={`p-3 rounded-lg border-2 text-center transition-all ${
+                      newLink.type === type.id
+                        ? 'border-primary-500 bg-primary-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <span className="text-xl">{type.icon}</span>
+                    <p className="text-xs mt-1">{type.name}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
             <Input
               placeholder="Link Title (e.g., My Website)"
               value={newLink.title}
@@ -225,6 +262,29 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
               value={newLink.url}
               onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
             />
+            {newLink.type !== 'link' && (
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  {newLink.type === 'youtube' && 'YouTube Video URL'}
+                  {newLink.type === 'spotify' && 'Spotify URL (track, album, or playlist)'}
+                  {newLink.type === 'tiktok' && 'TikTok Video URL'}
+                </label>
+                <Input
+                  placeholder={
+                    newLink.type === 'youtube'
+                      ? 'https://youtube.com/watch?v=...'
+                      : newLink.type === 'spotify'
+                      ? 'https://open.spotify.com/track/...'
+                      : 'https://tiktok.com/@user/video/...'
+                  }
+                  value={newLink.embedUrl}
+                  onChange={(e) => setNewLink({ ...newLink, embedUrl: e.target.value })}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  This will be embedded directly on your profile
+                </p>
+              </div>
+            )}
             <div className="flex gap-2">
               <Button onClick={handleAddLink} isLoading={isLoading}>
                 <Check className="w-4 h-4 mr-2" />
@@ -234,7 +294,7 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
                 variant="outline"
                 onClick={() => {
                   setIsAdding(false)
-                  setNewLink({ title: '', url: '' })
+                  setNewLink({ title: '', url: '', type: 'link', embedUrl: '' })
                 }}
               >
                 <X className="w-4 h-4 mr-2" />
@@ -330,12 +390,39 @@ function LinkCard({
   isLoading,
   isDragging,
 }: LinkCardProps) {
-  const [editData, setEditData] = useState({ title: link.title, url: link.url })
+  const [editData, setEditData] = useState({
+    title: link.title,
+    url: link.url,
+    type: link.type || 'link',
+    embedUrl: link.embedUrl || '',
+  })
+
+  const linkType = LINK_TYPES.find((t) => t.id === link.type) || LINK_TYPES[0]
 
   if (isEditing) {
     return (
       <Card>
         <CardContent className="p-4 space-y-4">
+          {/* Link Type Selector */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Link Type</label>
+            <div className="grid grid-cols-4 gap-2">
+              {LINK_TYPES.map((type) => (
+                <button
+                  key={type.id}
+                  onClick={() => setEditData({ ...editData, type: type.id })}
+                  className={`p-2 rounded-lg border-2 text-center transition-all ${
+                    editData.type === type.id
+                      ? 'border-primary-500 bg-primary-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <span className="text-lg">{type.icon}</span>
+                  <p className="text-xs mt-1">{type.name}</p>
+                </button>
+              ))}
+            </div>
+          </div>
           <Input
             placeholder="Link Title"
             value={editData.title}
@@ -346,10 +433,25 @@ function LinkCard({
             value={editData.url}
             onChange={(e) => setEditData({ ...editData, url: e.target.value })}
           />
+          {editData.type !== 'link' && (
+            <div>
+              <label className="block text-sm font-medium mb-2">Embed URL</label>
+              <Input
+                placeholder="Embed URL for the content"
+                value={editData.embedUrl}
+                onChange={(e) => setEditData({ ...editData, embedUrl: e.target.value })}
+              />
+            </div>
+          )}
           <div className="flex gap-2">
             <Button
               size="sm"
-              onClick={() => onUpdate(editData)}
+              onClick={() => onUpdate({
+                title: editData.title,
+                url: editData.url,
+                type: editData.type,
+                embedUrl: editData.type !== 'link' ? editData.embedUrl : null,
+              })}
               isLoading={isLoading}
             >
               <Check className="w-4 h-4 mr-2" />
@@ -375,7 +477,10 @@ function LinkCard({
             }`}
           />
           <div className="flex-1 min-w-0">
-            <p className="font-medium truncate">{link.title}</p>
+            <div className="flex items-center gap-2">
+              <span title={linkType.name}>{linkType.icon}</span>
+              <p className="font-medium truncate">{link.title}</p>
+            </div>
             <p className="text-sm text-gray-500 truncate">{link.url}</p>
           </div>
           <div className="flex items-center gap-1 text-sm text-gray-500">

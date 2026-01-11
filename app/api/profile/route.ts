@@ -7,12 +7,20 @@ import { z } from 'zod'
 const updateSchema = z.object({
   title: z.string().optional(),
   bio: z.string().optional(),
+  image: z.string().optional(),
   backgroundColor: z.string().optional(),
   buttonStyle: z.string().optional(),
   buttonColor: z.string().optional(),
   textColor: z.string().optional(),
   fontFamily: z.string().optional(),
   theme: z.string().optional(),
+  socialInstagram: z.string().optional(),
+  socialTwitter: z.string().optional(),
+  socialYoutube: z.string().optional(),
+  socialTiktok: z.string().optional(),
+  socialLinkedin: z.string().optional(),
+  socialGithub: z.string().optional(),
+  socialWebsite: z.string().optional(),
 })
 
 export async function PATCH(request: Request) {
@@ -32,20 +40,21 @@ export async function PATCH(request: Request) {
       )
     }
 
-    const { title, bio, ...profileData } = validation.data
+    const { title, bio, image, ...profileData } = validation.data
 
     // Update user info
-    if (title !== undefined || bio !== undefined) {
+    if (title !== undefined || bio !== undefined || image !== undefined) {
       await db.user.update({
         where: { id: session.user.id },
         data: {
-          name: title,
-          bio,
+          ...(title !== undefined && { name: title }),
+          ...(bio !== undefined && { bio }),
+          ...(image !== undefined && { image }),
         },
       })
     }
 
-    // Update profile settings
+    // Update profile settings (including social links)
     const profile = await db.profile.update({
       where: { userId: session.user.id },
       data: profileData,

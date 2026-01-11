@@ -9,6 +9,8 @@ const linkSchema = z.object({
   title: z.string().min(1).max(100),
   url: z.string().url(),
   order: z.number().optional(),
+  type: z.enum(['link', 'youtube', 'spotify', 'tiktok']).optional(),
+  embedUrl: z.string().optional(),
 })
 
 export async function GET() {
@@ -62,7 +64,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const { title, url, order } = validation.data
+    const { title, url, order, type, embedUrl } = validation.data
 
     const link = await db.link.create({
       data: {
@@ -70,6 +72,8 @@ export async function POST(request: Request) {
         title,
         url,
         order: order ?? currentLinkCount,
+        type: type || 'link',
+        embedUrl: embedUrl || null,
       },
     })
 

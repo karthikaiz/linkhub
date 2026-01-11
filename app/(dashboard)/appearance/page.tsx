@@ -20,7 +20,7 @@ export default async function AppearancePage() {
 
   const user = await db.user.findUnique({
     where: { id: session!.user.id },
-    select: { username: true, name: true, bio: true },
+    select: { username: true, name: true, bio: true, image: true },
   })
 
   return (

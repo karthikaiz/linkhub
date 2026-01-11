@@ -9,6 +9,8 @@ const updateSchema = z.object({
   url: z.string().url().optional(),
   isActive: z.boolean().optional(),
   order: z.number().optional(),
+  type: z.enum(['link', 'youtube', 'spotify', 'tiktok']).optional(),
+  embedUrl: z.string().nullable().optional(),
 })
 
 export async function PATCH(

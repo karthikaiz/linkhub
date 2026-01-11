@@ -80,6 +80,7 @@ export default async function UserProfilePage({ params }: PageProps) {
         name: user.name,
         username: user.username!,
         bio: user.bio,
+        image: user.image,
       }}
       profile={user.profile!}
       links={user.links}

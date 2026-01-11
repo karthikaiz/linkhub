@@ -79,6 +79,14 @@ model Profile {
   backgroundImage String?
   theme           String  @default("light")
   customCss       String?
+  // Social Links
+  socialInstagram String?
+  socialTwitter   String?
+  socialYoutube   String?
+  socialTiktok    String?
+  socialLinkedin  String?
+  socialGithub    String?
+  socialWebsite   String?
 }
 
 model Link {
@@ -91,6 +99,9 @@ model Link {
   order     Int      @default(0)
   isActive  Boolean  @default(true)
   clicks    Int      @default(0)
+  // Embed support
+  type      String   @default("link") // "link", "youtube", "spotify", "tiktok"
+  embedUrl  String?
   analytics Analytics[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
