@@ -48,7 +48,7 @@ export function Sidebar({ user }: SidebarProps) {
     <>
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 z-40 flex items-center justify-between px-4">
-        <Link href="/dashboard" className="text-xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+        <Link href="/dashboard" className="text-xl font-bold text-gray-900">
           LinkHub
         </Link>
         <button
@@ -77,7 +77,7 @@ export function Sidebar({ user }: SidebarProps) {
       >
         {/* Logo */}
         <div className="h-16 flex items-center px-6 border-b border-gray-100">
-          <Link href="/dashboard" className="text-xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+          <Link href="/dashboard" className="text-xl font-bold text-gray-900">
             LinkHub
           </Link>
         </div>
@@ -86,7 +86,7 @@ export function Sidebar({ user }: SidebarProps) {
         <div className="p-4">
           <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 rounded-2xl p-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-semibold shadow-lg shadow-violet-500/25 overflow-hidden">
+              <div className="w-12 h-12 rounded-xl bg-gray-900 flex items-center justify-center text-white font-semibold shadow-lg overflow-hidden">
                 {user.image ? (
                   <img src={user.image} alt="" className="w-full h-full object-cover" />
                 ) : (
@@ -125,7 +125,7 @@ export function Sidebar({ user }: SidebarProps) {
                   className={cn(
                     'group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200',
                     isActive
-                      ? 'bg-gradient-to-r from-violet-500 to-indigo-600 text-white shadow-lg shadow-violet-500/25'
+                      ? 'bg-gray-900 text-white shadow-lg'
                       : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                   )}
                 >

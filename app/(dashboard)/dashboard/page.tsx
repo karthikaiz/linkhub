@@ -153,13 +153,13 @@ export default async function DashboardPage() {
 
       {/* Share Link */}
       {session?.user.username && (
-        <Card className="bg-gradient-to-br from-violet-600 via-indigo-600 to-purple-700 text-white border-0 shadow-xl shadow-violet-500/20">
+        <Card className="bg-gray-900 text-white border-0 shadow-xl">
           <CardContent className="p-4 sm:p-6">
             <h3 className="font-bold text-lg mb-2">Share Your LinkHub</h3>
-            <p className="mb-4 opacity-90 text-sm sm:text-base">
+            <p className="mb-4 opacity-80 text-sm sm:text-base">
               Your unique link is ready to share with the world!
             </p>
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 flex items-center gap-2 border border-white/10">
+            <div className="bg-white/10 rounded-xl p-3 flex items-center gap-2 border border-white/10">
               <span className="font-mono text-xs sm:text-sm flex-1 truncate overflow-hidden">
                 {process.env.NEXT_PUBLIC_APP_URL}/{session.user.username}
               </span>

@@ -53,7 +53,7 @@ body {
 
   /* Gradient text */
   .gradient-text {
-    background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+    background: linear-gradient(135deg, #111827 0%, #374151 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -102,6 +102,6 @@ body {
 
 /* Better focus states */
 *:focus-visible {
-  outline: 2px solid #7c3aed;
+  outline: 2px solid #111827;
   outline-offset: 2px;
 }
