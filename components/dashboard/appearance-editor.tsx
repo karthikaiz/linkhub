@@ -159,9 +159,9 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
             {/* Profile Image Upload */}
             <div>
               <label className="block text-sm font-medium mb-2">Profile Picture</label>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div
-                  className="relative w-20 h-20 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center cursor-pointer group"
+                  className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center cursor-pointer group shrink-0"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   {settings.image ? (
@@ -173,11 +173,11 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                   ) : (
                     <Camera className="w-8 h-8 text-gray-400" />
                   )}
-                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <Camera className="w-6 h-6 text-white" />
                   </div>
                 </div>
-                <div className="flex-1">
+                <div className="flex flex-wrap gap-2">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -198,7 +198,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                       variant="ghost"
                       size="sm"
                       onClick={() => setSettings({ ...settings, image: '' })}
-                      className="ml-2 text-red-600 hover:text-red-700"
+                      className="text-red-600 hover:text-red-700"
                     >
                       Remove
                     </Button>
@@ -232,7 +232,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-3">
-              <Instagram className="w-5 h-5 text-pink-500" />
+              <Instagram className="w-5 h-5 text-pink-500 shrink-0" />
               <Input
                 value={settings.socialInstagram}
                 onChange={(e) => setSettings({ ...settings, socialInstagram: e.target.value })}
@@ -240,7 +240,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               />
             </div>
             <div className="flex items-center gap-3">
-              <Twitter className="w-5 h-5 text-blue-400" />
+              <Twitter className="w-5 h-5 text-blue-400 shrink-0" />
               <Input
                 value={settings.socialTwitter}
                 onChange={(e) => setSettings({ ...settings, socialTwitter: e.target.value })}
@@ -248,7 +248,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               />
             </div>
             <div className="flex items-center gap-3">
-              <Youtube className="w-5 h-5 text-red-500" />
+              <Youtube className="w-5 h-5 text-red-500 shrink-0" />
               <Input
                 value={settings.socialYoutube}
                 onChange={(e) => setSettings({ ...settings, socialYoutube: e.target.value })}
@@ -256,7 +256,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               />
             </div>
             <div className="flex items-center gap-3">
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
               </svg>
               <Input
@@ -266,7 +266,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               />
             </div>
             <div className="flex items-center gap-3">
-              <Linkedin className="w-5 h-5 text-blue-600" />
+              <Linkedin className="w-5 h-5 text-blue-600 shrink-0" />
               <Input
                 value={settings.socialLinkedin}
                 onChange={(e) => setSettings({ ...settings, socialLinkedin: e.target.value })}
@@ -274,7 +274,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               />
             </div>
             <div className="flex items-center gap-3">
-              <Github className="w-5 h-5" />
+              <Github className="w-5 h-5 shrink-0" />
               <Input
                 value={settings.socialGithub}
                 onChange={(e) => setSettings({ ...settings, socialGithub: e.target.value })}
@@ -282,7 +282,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               />
             </div>
             <div className="flex items-center gap-3">
-              <Globe className="w-5 h-5 text-green-500" />
+              <Globe className="w-5 h-5 text-green-500 shrink-0" />
               <Input
                 value={settings.socialWebsite}
                 onChange={(e) => setSettings({ ...settings, socialWebsite: e.target.value })}

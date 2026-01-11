@@ -109,10 +109,10 @@ export default async function AnalyticsPage() {
   const totalBrowserViews = browserStats.reduce((acc, b) => acc + b._count.id, 0)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold">Analytics</h1>
-        <p className="text-gray-600">Track your page performance</p>
+        <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
+        <p className="text-gray-500 mt-1">Track your page performance</p>
       </div>
 
       {/* Stats */}

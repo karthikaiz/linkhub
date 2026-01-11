@@ -15,10 +15,10 @@ export default async function LinksPage() {
   const plan = await getUserSubscriptionPlan(session!.user.id)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold">Links</h1>
-        <p className="text-gray-600">Manage your links and their order</p>
+        <h1 className="text-2xl font-bold text-gray-900">Links</h1>
+        <p className="text-gray-500 mt-1">Manage your links and their order</p>
       </div>
 
       <LinksManager

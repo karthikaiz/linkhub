@@ -24,10 +24,10 @@ export default async function AppearancePage() {
   })
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold">Appearance</h1>
-        <p className="text-gray-600">Customize how your page looks</p>
+        <h1 className="text-2xl font-bold text-gray-900">Appearance</h1>
+        <p className="text-gray-500 mt-1">Customize how your page looks</p>
       </div>
 
       <AppearanceEditor

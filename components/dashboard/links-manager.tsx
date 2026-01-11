@@ -345,14 +345,14 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
 
       {/* Upgrade prompt */}
       {!isPro && links.length >= 3 && (
-        <Card className="bg-gradient-to-r from-primary-500 to-purple-500 text-white">
+        <Card className="bg-gradient-to-br from-violet-600 via-indigo-600 to-purple-700 text-white border-0 shadow-xl shadow-violet-500/20">
           <CardContent className="p-6 text-center">
             <h3 className="font-bold text-lg mb-2">Want unlimited links?</h3>
             <p className="mb-4 opacity-90">
               Upgrade to Pro for unlimited links, custom themes, and more!
             </p>
             <Link href="/settings">
-              <Button className="bg-white text-primary-600 hover:bg-gray-100">
+              <Button className="bg-white text-violet-600 hover:bg-gray-100 shadow-lg">
                 Upgrade to Pro - $5/month
               </Button>
             </Link>
