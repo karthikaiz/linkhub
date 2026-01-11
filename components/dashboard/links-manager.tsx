@@ -474,8 +474,60 @@ function LinkCard({
 
   return (
     <Card className={!link.isActive ? 'opacity-60' : ''}>
-      <CardContent className="p-4">
-        <div className="flex items-center gap-4">
+      <CardContent className="p-3 sm:p-4">
+        {/* Mobile Layout */}
+        <div className="sm:hidden">
+          <div className="flex items-start gap-2">
+            <GripVertical
+              className={`w-5 h-5 text-gray-400 shrink-0 mt-1 ${
+                isDragging ? 'cursor-grabbing' : 'cursor-grab'
+              }`}
+            />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <span title={linkType.name}>{linkType.icon}</span>
+                <p className="font-medium truncate text-sm">{link.title}</p>
+              </div>
+              <p className="text-xs text-gray-500 truncate mb-2">{link.url}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-500">{link.clicks} clicks</span>
+                <div className="flex items-center gap-1">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={onToggleActive}
+                    className="h-8 w-8"
+                  >
+                    {link.isActive ? (
+                      <Eye className="w-4 h-4" />
+                    ) : (
+                      <EyeOff className="w-4 h-4" />
+                    )}
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={onEdit} className="h-8 w-8">
+                    <Edit2 className="w-4 h-4" />
+                  </Button>
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    <Button size="icon" variant="ghost" className="h-8 w-8">
+                      <ExternalLink className="w-4 h-4" />
+                    </Button>
+                  </a>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={onDelete}
+                    className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="hidden sm:flex items-center gap-4">
           <GripVertical
             className={`w-5 h-5 text-gray-400 ${
               isDragging ? 'cursor-grabbing' : 'cursor-grab'
@@ -488,10 +540,10 @@ function LinkCard({
             </div>
             <p className="text-sm text-gray-500 truncate">{link.url}</p>
           </div>
-          <div className="flex items-center gap-1 text-sm text-gray-500">
+          <div className="flex items-center gap-1 text-sm text-gray-500 shrink-0">
             <span>{link.clicks} clicks</span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 shrink-0">
             <Button
               size="icon"
               variant="ghost"

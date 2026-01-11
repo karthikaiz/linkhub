@@ -99,19 +99,11 @@ export function ProfilePreview({
 
       {/* Name */}
       <h2
-        className="text-xl font-bold text-center mb-1"
+        className="text-xl font-bold text-center mb-2"
         style={{ color: profileTextColor }}
       >
         {title || username}
       </h2>
-
-      {/* Username */}
-      <p
-        className="text-sm text-center mb-2 opacity-75"
-        style={{ color: profileTextColor }}
-      >
-        @{username}
-      </p>
 
       {/* Bio */}
       {bio && (

@@ -203,19 +203,11 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
 
         {/* Name */}
         <h1
-          className="text-2xl font-bold text-center mb-1"
+          className="text-2xl font-bold text-center mb-2"
           style={{ color: profileTextColor }}
         >
           {user.name || user.username}
         </h1>
-
-        {/* Username */}
-        <p
-          className="text-sm text-center mb-2 opacity-75"
-          style={{ color: profileTextColor }}
-        >
-          @{user.username}
-        </p>
 
         {/* Bio */}
         {user.bio && (
