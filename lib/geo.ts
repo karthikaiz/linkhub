@@ -8,7 +8,7 @@ export type Currency = 'INR' | 'USD'
  */
 export async function detectCurrency(): Promise<Currency> {
   try {
-    const headersList = headers()
+    const headersList = await headers()
 
     // Vercel provides geo information via headers
     // https://vercel.com/docs/concepts/edge-network/headers#x-vercel-ip-country
@@ -35,7 +35,7 @@ export async function detectCurrency(): Promise<Currency> {
  */
 export async function getCountryCode(): Promise<string | null> {
   try {
-    const headersList = headers()
+    const headersList = await headers()
     return (
       headersList.get('x-vercel-ip-country') ||
       headersList.get('cf-ipcountry') ||

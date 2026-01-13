@@ -6,7 +6,8 @@ import crypto from 'crypto'
 export async function POST(request: Request) {
   try {
     const body = await request.text()
-    const signature = headers().get('x-razorpay-signature') as string
+    const headersList = await headers()
+    const signature = headersList.get('x-razorpay-signature') as string
 
     // Verify webhook signature
     const secret = process.env.RAZORPAY_WEBHOOK_SECRET!

@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { getUserSubscriptionPlan, PLANS } from '@/lib/stripe'
+import { getUserSubscriptionPlan, PLANS } from '@/lib/razorpay'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { SubscriptionButton } from '@/components/dashboard/subscription-button'
 import { DeleteAccountButton } from '@/components/dashboard/delete-account-button'
@@ -71,11 +71,11 @@ export default async function SettingsPage() {
                 )}
               </div>
               <p className="text-gray-600">{plan.description}</p>
-              {plan.stripeCurrentPeriodEnd && (
+              {plan.subscriptionEndDate && (
                 <p className="text-sm text-gray-500 mt-1">
                   {plan.isPro
-                    ? `Renews on ${formatDate(plan.stripeCurrentPeriodEnd)}`
-                    : `Expired on ${formatDate(plan.stripeCurrentPeriodEnd)}`}
+                    ? `Renews on ${formatDate(plan.subscriptionEndDate)}`
+                    : `Expired on ${formatDate(plan.subscriptionEndDate)}`}
                 </p>
               )}
             </div>
@@ -121,7 +121,7 @@ export default async function SettingsPage() {
                 </span>
               </div>
               <p className="text-3xl font-bold mt-2">
-                ${PLANS.pro.price}<span className="text-sm text-gray-500 font-normal">/month</span>
+                ₹{PLANS.pro.price.INR}<span className="text-sm text-gray-500 font-normal">/month</span>
               </p>
               <ul className="mt-4 space-y-2">
                 {PLANS.pro.features.map((feature, i) => (
