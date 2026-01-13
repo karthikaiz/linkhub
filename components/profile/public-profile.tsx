@@ -2,6 +2,68 @@
 
 import { useState } from 'react'
 import { Instagram, Twitter, Youtube, Linkedin, Github, Globe } from 'lucide-react'
+import { Particles } from './particles'
+
+// Pre-built themes for Gen-Z appeal
+const THEMES = {
+  custom: null, // User's custom colors
+  neon: {
+    bg: '#0a0a0a',
+    button: '#00ff88',
+    text: '#000000',
+    particles: 'stars' as const,
+    buttonStyle: 'glass' as const,
+  },
+  pastel: {
+    bg: '#ffeef8',
+    button: '#ffb6c1',
+    text: '#4a4a4a',
+    particles: 'hearts' as const,
+    buttonStyle: 'soft' as const,
+  },
+  y2k: {
+    bg: '#ff00ff',
+    button: '#00ffff',
+    text: '#000000',
+    particles: 'stars' as const,
+    buttonStyle: 'glass' as const,
+  },
+  minimal: {
+    bg: '#ffffff',
+    button: '#000000',
+    text: '#ffffff',
+    particles: 'none' as const,
+    buttonStyle: 'soft' as const,
+  },
+  sunset: {
+    bg: '#ff6b6b',
+    button: '#ffffff',
+    text: '#ff6b6b',
+    particles: 'confetti' as const,
+    buttonStyle: 'rounded' as const,
+  },
+  ocean: {
+    bg: '#0077b6',
+    button: '#ffffff',
+    text: '#0077b6',
+    particles: 'bubbles' as const,
+    buttonStyle: 'rounded' as const,
+  },
+  forest: {
+    bg: '#2d6a4f',
+    button: '#ffffff',
+    text: '#2d6a4f',
+    particles: 'none' as const,
+    buttonStyle: 'soft' as const,
+  },
+  snow: {
+    bg: '#1a1a2e',
+    button: '#ffffff',
+    text: '#1a1a2e',
+    particles: 'snow' as const,
+    buttonStyle: 'glass' as const,
+  },
+}
 
 interface PublicProfileProps {
   user: {
@@ -17,6 +79,8 @@ interface PublicProfileProps {
     buttonColor: string
     textColor: string
     backgroundStyle?: string
+    theme?: string
+    particleEffect?: string
     socialInstagram?: string | null
     socialTwitter?: string | null
     socialYoutube?: string | null
@@ -36,6 +100,17 @@ interface PublicProfileProps {
 
 export function PublicProfile({ user, profile, links }: PublicProfileProps) {
   const [clickedLinks, setClickedLinks] = useState<Set<string>>(new Set())
+  const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([])
+
+  // Get theme settings or use custom colors
+  const themeKey = (profile.theme || 'custom') as keyof typeof THEMES
+  const theme = THEMES[themeKey]
+
+  const backgroundColor = theme?.bg || profile.backgroundColor
+  const buttonColor = theme?.button || profile.buttonColor
+  const textColor = theme?.text || profile.textColor
+  const particleType = (profile.particleEffect || theme?.particles || 'none') as any
+  const buttonStyleOverride = theme?.buttonStyle || profile.buttonStyle
 
   const getInitials = (name: string | null, username: string) => {
     if (name) {
@@ -49,13 +124,15 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
   }
 
   const getButtonClass = () => {
-    switch (profile.buttonStyle) {
+    switch (buttonStyleOverride) {
       case 'rounded':
         return 'rounded-full'
       case 'square':
         return 'rounded-none'
       case 'soft':
         return 'rounded-xl'
+      case 'glass':
+        return 'rounded-xl glass'
       default:
         return 'rounded-full'
     }
@@ -70,12 +147,12 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
     return brightness > 128
   }
 
-  const isLightBg = isLightBackground(profile.backgroundColor)
+  const isLightBg = isLightBackground(backgroundColor)
   const profileTextColor = isLightBg ? '#000000' : '#ffffff'
 
   // Generate gradient background based on main color
   const getBackgroundStyle = () => {
-    const baseColor = profile.backgroundColor
+    const baseColor = backgroundColor
     const style = profile.backgroundStyle || 'gradient'
 
     if (style === 'solid') {
@@ -108,7 +185,17 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
     }
   }
 
-  const handleLinkClick = async (linkId: string, url: string) => {
+  const handleLinkClick = async (linkId: string, url: string, event: React.MouseEvent) => {
+    // Add ripple effect
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    const rippleId = Date.now()
+    setRipples(prev => [...prev, { id: rippleId, x, y }])
+    setTimeout(() => {
+      setRipples(prev => prev.filter(r => r.id !== rippleId))
+    }, 600)
+
     if (!clickedLinks.has(linkId)) {
       setClickedLinks(new Set(Array.from(clickedLinks).concat(linkId)))
 
@@ -137,17 +224,6 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
       case 'website': return value.startsWith('http') ? value : `https://${value}`
       default: return value
     }
-  }
-
-  // Branded social colors
-  const socialColors: Record<string, string> = {
-    instagram: '#E4405F',
-    twitter: '#1DA1F2',
-    youtube: '#FF0000',
-    tiktok: '#000000',
-    linkedin: '#0A66C2',
-    github: '#333333',
-    website: '#6366F1',
   }
 
   const TikTokIcon = () => (
@@ -188,8 +264,7 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
       }
     }
     if (link.type === 'tiktok' && link.embedUrl) {
-      // TikTok doesn't have a simple iframe embed, so we show a styled link card
-      return null // Will be rendered as a regular button with TikTok styling
+      return null
     }
     return null
   }
@@ -205,19 +280,20 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
     return null
   }
 
-  const extractTikTokId = (url: string) => {
-    const match = url.match(/tiktok\.com\/@[\w.-]+\/video\/(\d+)/)
-    return match?.[1]
-  }
+  const isGlassStyle = buttonStyleOverride === 'glass'
+  const isNeonTheme = themeKey === 'neon'
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4 sm:p-6"
+      className="min-h-screen flex items-center justify-center p-4 sm:p-6 relative overflow-hidden"
       style={getBackgroundStyle()}
     >
+      {/* Animated Particles */}
+      <Particles type={particleType} count={25} />
+
       {/* Subtle pattern overlay */}
       <div
-        className="fixed inset-0 opacity-[0.03] pointer-events-none"
+        className="fixed inset-0 opacity-[0.03] pointer-events-none z-[1]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23${isLightBg ? '000000' : 'ffffff'}' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }}
@@ -235,14 +311,17 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
           <div
             className="absolute inset-0 rounded-full"
             style={{
-              background: `linear-gradient(45deg, ${profile.buttonColor}, ${profileTextColor}40, ${profile.buttonColor})`,
-              animation: 'borderRotate 4s linear infinite',
+              background: isNeonTheme
+                ? `linear-gradient(45deg, ${buttonColor}, #00ffff, ${buttonColor})`
+                : `linear-gradient(45deg, ${buttonColor}, ${profileTextColor}40, ${buttonColor})`,
+              animation: isNeonTheme ? 'borderRotate 2s linear infinite, neonPulse 2s ease-in-out infinite' : 'borderRotate 4s linear infinite',
               padding: '3px',
+              color: buttonColor,
             }}
           >
             <div
               className="w-full h-full rounded-full"
-              style={{ backgroundColor: profile.backgroundColor }}
+              style={{ backgroundColor }}
             />
           </div>
 
@@ -250,9 +329,11 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
           <div
             className="absolute inset-1 rounded-full shadow-2xl flex items-center justify-center text-3xl font-bold overflow-hidden"
             style={{
-              backgroundColor: profile.buttonColor,
-              color: profile.textColor,
-              boxShadow: `0 8px 32px ${profile.buttonColor}40`,
+              backgroundColor: buttonColor,
+              color: textColor,
+              boxShadow: isNeonTheme
+                ? `0 0 30px ${buttonColor}80, 0 0 60px ${buttonColor}40`
+                : `0 8px 32px ${buttonColor}40`,
             }}
           >
             {user.image ? (
@@ -269,7 +350,9 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
           style={{
             color: profileTextColor,
             animation: 'linkSlideUp 0.5s ease-out 0.2s both',
-            textShadow: isLightBg ? 'none' : '0 2px 10px rgba(0,0,0,0.2)',
+            textShadow: isNeonTheme
+              ? `0 0 10px ${profileTextColor}, 0 0 20px ${profileTextColor}`
+              : (isLightBg ? 'none' : '0 2px 10px rgba(0,0,0,0.2)'),
           }}
         >
           {user.name || user.username}
@@ -427,30 +510,53 @@ export function PublicProfile({ user, profile, links }: PublicProfileProps) {
                   </div>
                 )
               }
-              // For TikTok, use embedUrl as the link destination
               const linkUrl = link.type === 'tiktok' && link.embedUrl ? link.embedUrl : link.url
 
               return (
                 <button
                   key={link.id}
-                  onClick={() => handleLinkClick(link.id, linkUrl)}
-                  className={`group w-full py-4 px-6 text-center font-semibold transition-all duration-300 ${getButtonClass()}`}
+                  onClick={(e) => handleLinkClick(link.id, linkUrl, e)}
+                  className={`group w-full py-4 px-6 text-center font-semibold transition-all duration-300 relative overflow-hidden ${getButtonClass()}`}
                   style={{
-                    backgroundColor: profile.buttonColor,
-                    color: profile.textColor,
-                    boxShadow: `0 4px 15px ${profile.buttonColor}30`,
+                    backgroundColor: isGlassStyle ? 'rgba(255,255,255,0.1)' : buttonColor,
+                    color: isGlassStyle ? profileTextColor : textColor,
+                    boxShadow: isNeonTheme
+                      ? `0 0 20px ${buttonColor}60, inset 0 0 20px ${buttonColor}20`
+                      : `0 4px 15px ${buttonColor}30`,
                     animation: `linkSlideUp 0.5s ease-out ${animationDelay}s both`,
+                    border: isGlassStyle ? `1px solid rgba(255,255,255,0.2)` : 'none',
+                    backdropFilter: isGlassStyle ? 'blur(10px)' : 'none',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)'
-                    e.currentTarget.style.boxShadow = `0 8px 25px ${profile.buttonColor}50`
+                    e.currentTarget.style.boxShadow = isNeonTheme
+                      ? `0 0 30px ${buttonColor}80, inset 0 0 30px ${buttonColor}30`
+                      : `0 8px 25px ${buttonColor}50`
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0) scale(1)'
-                    e.currentTarget.style.boxShadow = `0 4px 15px ${profile.buttonColor}30`
+                    e.currentTarget.style.boxShadow = isNeonTheme
+                      ? `0 0 20px ${buttonColor}60, inset 0 0 20px ${buttonColor}20`
+                      : `0 4px 15px ${buttonColor}30`
                   }}
                 >
-                  <span className="relative">
+                  {/* Ripple effect */}
+                  {ripples.map(ripple => (
+                    <span
+                      key={ripple.id}
+                      className="absolute rounded-full bg-white/30 pointer-events-none"
+                      style={{
+                        left: ripple.x,
+                        top: ripple.y,
+                        width: 20,
+                        height: 20,
+                        marginLeft: -10,
+                        marginTop: -10,
+                        animation: 'ripple 0.6s ease-out forwards',
+                      }}
+                    />
+                  ))}
+                  <span className="relative z-10">
                     {link.title}
                     <span
                       className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"
