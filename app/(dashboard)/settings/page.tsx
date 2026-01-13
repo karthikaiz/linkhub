@@ -88,7 +88,7 @@ export default async function SettingsPage() {
             <div className={`p-6 rounded-lg border-2 ${!plan.isPro ? 'border-primary-500 bg-primary-50' : 'border-gray-200'}`}>
               <h4 className="font-bold text-lg">{PLANS.free.name}</h4>
               <p className="text-3xl font-bold mt-2">
-                $0<span className="text-sm text-gray-500 font-normal">/month</span>
+                ₹0<span className="text-sm text-gray-500 font-normal">/month</span>
               </p>
               <ul className="mt-4 space-y-2">
                 {PLANS.free.features.map((feature, i) => (

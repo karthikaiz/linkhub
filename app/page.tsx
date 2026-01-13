@@ -128,7 +128,7 @@ export default function HomePage() {
             <h3 className="font-bold text-2xl mb-2">Free</h3>
             <p className="text-gray-500 mb-4">For personal use</p>
             <div className="text-4xl font-bold mb-6">
-              $0<span className="text-lg text-gray-500 font-normal">/month</span>
+              ₹0<span className="text-lg text-gray-500 font-normal">/month</span>
             </div>
             <ul className="space-y-3 mb-8">
               {['Up to 5 links', 'Basic analytics', 'Standard themes', 'LinkHub branding'].map((item, i) => (
@@ -153,7 +153,7 @@ export default function HomePage() {
             <h3 className="font-bold text-2xl mb-2">Pro</h3>
             <p className="text-primary-100 mb-4">For creators & businesses</p>
             <div className="text-4xl font-bold mb-6">
-              $5<span className="text-lg text-primary-200 font-normal">/month</span>
+              ₹299<span className="text-lg text-primary-200 font-normal">/month</span>
             </div>
             <ul className="space-y-3 mb-8">
               {[

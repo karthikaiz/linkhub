@@ -353,7 +353,7 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
             </p>
             <Link href="/settings">
               <Button className="bg-white text-gray-900 hover:bg-gray-100 shadow-lg">
-                Upgrade to Pro - $5/month
+                Upgrade to Pro
               </Button>
             </Link>
           </CardContent>
