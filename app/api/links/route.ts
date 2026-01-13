@@ -10,7 +10,7 @@ const linkSchema = z.object({
   url: z.string().url(),
   order: z.number().optional(),
   type: z.enum(['link', 'youtube', 'spotify', 'tiktok']).optional(),
-  embedUrl: z.string().optional(),
+  embedUrl: z.string().nullable().optional(),
 })
 
 export async function GET() {
