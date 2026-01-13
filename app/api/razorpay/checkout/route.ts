@@ -41,8 +41,13 @@ export async function POST() {
     }
 
     // Detect currency based on user's location
-    const currency = await detectCurrency()
+    let currency = await detectCurrency()
     const country = await getCountryCode()
+
+    // If USD plan is not configured, use INR for all customers
+    if (currency === 'USD' && !process.env.RAZORPAY_PLAN_ID_USD) {
+      currency = 'INR'
+    }
 
     // Get plan price for the detected currency
     const amount = PLAN_PRICES[currency].pro
