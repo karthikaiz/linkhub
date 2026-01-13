@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { getUserSubscriptionPlan } from '@/lib/razorpay'
 import { z } from 'zod'
 
 const linkSchema = z.object({

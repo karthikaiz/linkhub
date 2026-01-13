@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { AppearanceEditor } from '@/components/dashboard/appearance-editor'
-import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { getUserSubscriptionPlan } from '@/lib/razorpay'
 
 export default async function AppearancePage() {
   const session = await getServerSession(authOptions)

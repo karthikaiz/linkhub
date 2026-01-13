@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { LinksManager } from '@/components/dashboard/links-manager'
-import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { getUserSubscriptionPlan } from '@/lib/razorpay'
 
 export default async function LinksPage() {
   const session = await getServerSession(authOptions)
