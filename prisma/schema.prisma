@@ -48,6 +48,7 @@ model User {
   links         Link[]
   profile       Profile?
   analytics     Analytics[]
+  subscribers   EmailSubscriber[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -90,6 +91,16 @@ model Profile {
   socialLinkedin  String?
   socialGithub    String?
   socialWebsite   String?
+  socialWhatsapp  String?
+  socialEmail     String?
+  // Email capture settings
+  emailCaptureEnabled Boolean @default(false)
+  emailCaptureTitle   String?
+  emailCaptureText    String?
+  // Tip jar settings
+  tipJarEnabled   Boolean @default(false)
+  tipJarUpiId     String?
+  tipJarText      String?
 }
 
 model Link {
@@ -123,4 +134,15 @@ model Analytics {
   browser   String?
   referer   String?
   createdAt DateTime @default(now())
+}
+
+model EmailSubscriber {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email     String
+  name      String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, email])
 }

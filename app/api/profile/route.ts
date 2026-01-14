@@ -22,6 +22,14 @@ const updateSchema = z.object({
   socialLinkedin: z.string().optional(),
   socialGithub: z.string().optional(),
   socialWebsite: z.string().optional(),
+  socialWhatsapp: z.string().optional(),
+  socialEmail: z.string().optional(),
+  emailCaptureEnabled: z.boolean().optional(),
+  emailCaptureTitle: z.string().optional(),
+  emailCaptureText: z.string().optional(),
+  tipJarEnabled: z.boolean().optional(),
+  tipJarUpiId: z.string().optional(),
+  tipJarText: z.string().optional(),
 })
 
 export async function PATCH(request: Request) {
