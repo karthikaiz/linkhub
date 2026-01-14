@@ -83,7 +83,7 @@ export default async function SettingsPage() {
                 </p>
               )}
             </div>
-            <SubscriptionButton isPro={plan.isPro || false} />
+            <SubscriptionButton isPro={plan.isPro || false} subscriptionEndDate={plan.subscriptionEndDate} />
           </div>
 
           {/* Plan Comparison */}

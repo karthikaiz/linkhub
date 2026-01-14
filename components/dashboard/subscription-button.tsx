@@ -3,9 +3,11 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import toast from 'react-hot-toast'
+import { X } from 'lucide-react'
 
 interface SubscriptionButtonProps {
   isPro: boolean
+  subscriptionEndDate?: Date | null
 }
 
 // Declare Razorpay on window
@@ -15,8 +17,10 @@ declare global {
   }
 }
 
-export function SubscriptionButton({ isPro }: SubscriptionButtonProps) {
+export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const [showManageModal, setShowManageModal] = useState(false)
+  const [isCancelling, setIsCancelling] = useState(false)
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -28,11 +32,33 @@ export function SubscriptionButton({ isPro }: SubscriptionButtonProps) {
     })
   }
 
+  const handleCancelSubscription = async () => {
+    setIsCancelling(true)
+    try {
+      const response = await fetch('/api/razorpay/cancel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to cancel subscription')
+      }
+
+      toast.success('Subscription cancelled. You\'ll have access until the end of your billing period.')
+      setShowManageModal(false)
+      setTimeout(() => window.location.reload(), 1500)
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to cancel subscription')
+    } finally {
+      setIsCancelling(false)
+    }
+  }
+
   const handleClick = async () => {
     if (isPro) {
-      // TODO: Implement manage subscription (Razorpay doesn't have a billing portal)
-      // You can redirect to a custom settings page or show subscription details
-      toast.success('Manage your subscription in Settings')
+      setShowManageModal(true)
       return
     }
 
@@ -125,9 +151,85 @@ export function SubscriptionButton({ isPro }: SubscriptionButtonProps) {
     }
   }
 
+  const formatDate = (date: Date) => {
+    return new Date(date).toLocaleDateString('en-IN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  }
+
   return (
-    <Button onClick={handleClick} isLoading={isLoading} variant={isPro ? 'outline' : 'default'}>
-      {isPro ? 'Manage Subscription' : 'Upgrade to Pro'}
-    </Button>
+    <>
+      <Button onClick={handleClick} isLoading={isLoading} variant={isPro ? 'outline' : 'default'}>
+        {isPro ? 'Manage Subscription' : 'Upgrade to Pro'}
+      </Button>
+
+      {/* Manage Subscription Modal */}
+      {showManageModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setShowManageModal(false)}
+          />
+
+          {/* Modal */}
+          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 p-6">
+            <button
+              onClick={() => setShowManageModal(false)}
+              className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <h2 className="text-xl font-bold mb-4">Manage Subscription</h2>
+
+            <div className="space-y-4">
+              {/* Current Plan */}
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-green-600 font-semibold">Pro Plan</span>
+                  <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">
+                    Active
+                  </span>
+                </div>
+                {subscriptionEndDate && (
+                  <p className="text-sm text-gray-600">
+                    Next billing: {formatDate(subscriptionEndDate)}
+                  </p>
+                )}
+              </div>
+
+              {/* Features */}
+              <div>
+                <p className="text-sm font-medium text-gray-700 mb-2">Your Pro benefits:</p>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• Unlimited links</li>
+                  <li>• Custom themes & colors</li>
+                  <li>• Advanced analytics</li>
+                  <li>• Priority support</li>
+                </ul>
+              </div>
+
+              {/* Cancel Section */}
+              <div className="pt-4 border-t">
+                <p className="text-sm text-gray-500 mb-3">
+                  If you cancel, you&apos;ll still have Pro access until your current billing period ends.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={handleCancelSubscription}
+                  isLoading={isCancelling}
+                  className="w-full text-red-600 border-red-200 hover:bg-red-50"
+                >
+                  Cancel Subscription
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
