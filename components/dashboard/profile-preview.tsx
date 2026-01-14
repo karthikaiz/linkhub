@@ -23,6 +23,7 @@ interface ProfilePreviewProps {
   buttonStyle: string
   image?: string
   socialLinks?: SocialLinks
+  particleEffect?: string
 }
 
 export function ProfilePreview({
@@ -36,6 +37,7 @@ export function ProfilePreview({
   buttonStyle,
   image,
   socialLinks,
+  particleEffect = 'none',
 }: ProfilePreviewProps) {
   const getInitials = (name: string, fallback: string) => {
     if (name) {
@@ -56,10 +58,14 @@ export function ProfilePreview({
         return 'rounded-none'
       case 'soft':
         return 'rounded-xl'
+      case 'glass':
+        return 'rounded-xl'
       default:
         return 'rounded-full'
     }
   }
+
+  const isGlassStyle = buttonStyle === 'glass'
 
   const isLightBackground = (color: string) => {
     const hex = color.replace('#', '')
@@ -243,9 +249,11 @@ export function ProfilePreview({
                   key={i}
                   className={`py-3 px-4 text-center font-semibold transition-all ${getButtonClass()}`}
                   style={{
-                    backgroundColor: buttonColor,
-                    color: textColor,
+                    backgroundColor: isGlassStyle ? 'rgba(255,255,255,0.1)' : buttonColor,
+                    color: isGlassStyle ? profileTextColor : textColor,
                     boxShadow: `0 4px 12px ${buttonColor}30`,
+                    backdropFilter: isGlassStyle ? 'blur(10px)' : 'none',
+                    border: isGlassStyle ? '1px solid rgba(255,255,255,0.2)' : 'none',
                   }}
                 >
                   {item}
@@ -258,9 +266,11 @@ export function ProfilePreview({
                 key={link.id}
                 className={`py-3 px-4 text-center font-semibold transition-all ${getButtonClass()}`}
                 style={{
-                  backgroundColor: buttonColor,
-                  color: textColor,
+                  backgroundColor: isGlassStyle ? 'rgba(255,255,255,0.1)' : buttonColor,
+                  color: isGlassStyle ? profileTextColor : textColor,
                   boxShadow: `0 4px 12px ${buttonColor}30`,
+                  backdropFilter: isGlassStyle ? 'blur(10px)' : 'none',
+                  border: isGlassStyle ? '1px solid rgba(255,255,255,0.2)' : 'none',
                 }}
               >
                 {link.title}

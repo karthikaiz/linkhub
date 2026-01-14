@@ -16,6 +16,7 @@ interface Profile {
   textColor: string
   fontFamily: string
   theme: string
+  particleEffect?: string
   socialInstagram?: string | null
   socialTwitter?: string | null
   socialYoutube?: string | null
@@ -46,18 +47,32 @@ interface AppearanceEditorProps {
 }
 
 const themes = [
-  { id: 'light', name: 'Light', bg: '#ffffff', btn: '#000000', text: '#ffffff' },
-  { id: 'dark', name: 'Dark', bg: '#1a1a2e', btn: '#ffffff', text: '#000000' },
-  { id: 'ocean', name: 'Ocean', bg: '#0077b6', btn: '#ffffff', text: '#0077b6' },
-  { id: 'sunset', name: 'Sunset', bg: '#ff6b6b', btn: '#ffffff', text: '#ff6b6b' },
-  { id: 'forest', name: 'Forest', bg: '#2d6a4f', btn: '#ffffff', text: '#2d6a4f' },
-  { id: 'lavender', name: 'Lavender', bg: '#7b68ee', btn: '#ffffff', text: '#7b68ee' },
+  { id: 'light', name: 'Light', bg: '#ffffff', btn: '#000000', text: '#ffffff', particles: 'none', btnStyle: 'rounded' },
+  { id: 'dark', name: 'Dark', bg: '#1a1a2e', btn: '#ffffff', text: '#000000', particles: 'none', btnStyle: 'rounded' },
+  { id: 'neon', name: 'Neon', bg: '#0a0a0a', btn: '#00ff88', text: '#000000', particles: 'stars', btnStyle: 'glass' },
+  { id: 'pastel', name: 'Pastel', bg: '#ffeef8', btn: '#ffb6c1', text: '#4a4a4a', particles: 'hearts', btnStyle: 'soft' },
+  { id: 'y2k', name: 'Y2K', bg: '#ff00ff', btn: '#00ffff', text: '#000000', particles: 'stars', btnStyle: 'glass' },
+  { id: 'minimal', name: 'Minimal', bg: '#ffffff', btn: '#000000', text: '#ffffff', particles: 'none', btnStyle: 'soft' },
+  { id: 'sunset', name: 'Sunset', bg: '#ff6b6b', btn: '#ffffff', text: '#ff6b6b', particles: 'confetti', btnStyle: 'rounded' },
+  { id: 'ocean', name: 'Ocean', bg: '#0077b6', btn: '#ffffff', text: '#0077b6', particles: 'bubbles', btnStyle: 'rounded' },
+  { id: 'forest', name: 'Forest', bg: '#2d6a4f', btn: '#ffffff', text: '#2d6a4f', particles: 'none', btnStyle: 'soft' },
+  { id: 'snow', name: 'Snow', bg: '#1a1a2e', btn: '#ffffff', text: '#1a1a2e', particles: 'snow', btnStyle: 'glass' },
+]
+
+const particleEffects = [
+  { id: 'none', name: 'None', emoji: '✕' },
+  { id: 'confetti', name: 'Confetti', emoji: '🎉' },
+  { id: 'stars', name: 'Stars', emoji: '✨' },
+  { id: 'bubbles', name: 'Bubbles', emoji: '🫧' },
+  { id: 'snow', name: 'Snow', emoji: '❄️' },
+  { id: 'hearts', name: 'Hearts', emoji: '💕' },
 ]
 
 const buttonStyles = [
   { id: 'rounded', name: 'Rounded', class: 'rounded-full' },
   { id: 'square', name: 'Square', class: 'rounded-none' },
   { id: 'soft', name: 'Soft', class: 'rounded-lg' },
+  { id: 'glass', name: 'Glass', class: 'rounded-xl glass' },
 ]
 
 export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEditorProps) {
@@ -67,6 +82,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
     buttonColor: profile.buttonColor,
     textColor: profile.textColor,
     theme: profile.theme,
+    particleEffect: profile.particleEffect || 'none',
     bio: user.bio || '',
     title: user.name || '',
     image: user.image || '',
@@ -125,6 +141,8 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
       backgroundColor: theme.bg,
       buttonColor: theme.btn,
       textColor: theme.text,
+      particleEffect: theme.particles,
+      buttonStyle: theme.btnStyle,
     })
   }
 
@@ -329,18 +347,48 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
             <CardTitle>Button Style</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               {buttonStyles.map((style) => (
                 <button
                   key={style.id}
                   onClick={() => setSettings({ ...settings, buttonStyle: style.id })}
-                  className={`flex-1 py-3 px-4 border-2 transition-all ${style.class} ${
+                  className={`flex-1 min-w-[70px] py-3 px-4 border-2 transition-all ${style.class} ${
                     settings.buttonStyle === style.id
                       ? 'border-primary-500 bg-primary-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   {style.name}
+                </button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Particle Effects */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Particle Effects
+              <span className="text-xs bg-gradient-to-r from-pink-500 to-purple-500 text-white px-2 py-0.5 rounded-full">
+                New
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 gap-3">
+              {particleEffects.map((effect) => (
+                <button
+                  key={effect.id}
+                  onClick={() => setSettings({ ...settings, particleEffect: effect.id })}
+                  className={`p-3 rounded-lg border-2 transition-all text-center ${
+                    settings.particleEffect === effect.id
+                      ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="text-2xl mb-1">{effect.emoji}</div>
+                  <p className="text-xs font-medium">{effect.name}</p>
                 </button>
               ))}
             </div>
@@ -429,6 +477,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                 buttonColor={settings.buttonColor}
                 textColor={settings.textColor}
                 buttonStyle={settings.buttonStyle}
+                particleEffect={settings.particleEffect}
                 image={settings.image}
                 socialLinks={{
                   instagram: settings.socialInstagram,

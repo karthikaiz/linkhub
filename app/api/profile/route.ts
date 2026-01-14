@@ -14,6 +14,7 @@ const updateSchema = z.object({
   textColor: z.string().optional(),
   fontFamily: z.string().optional(),
   theme: z.string().optional(),
+  particleEffect: z.string().optional(),
   socialInstagram: z.string().optional(),
   socialTwitter: z.string().optional(),
   socialYoutube: z.string().optional(),

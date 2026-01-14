@@ -80,6 +80,7 @@ model Profile {
   fontFamily      String  @default("Inter")
   backgroundImage String?
   theme           String  @default("light")
+  particleEffect  String  @default("none")
   customCss       String?
   // Social Links
   socialInstagram String?
