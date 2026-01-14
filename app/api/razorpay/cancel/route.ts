@@ -26,10 +26,9 @@ export async function POST() {
 
     // Cancel subscription in Razorpay
     // This will cancel at the end of the current billing period
+    // Second parameter: true/1 = cancel at cycle end, false/0 = cancel immediately
     try {
-      await razorpay.subscriptions.cancel(user.razorpaySubscriptionId, {
-        cancel_at_cycle_end: 1, // Cancel at end of current billing cycle
-      })
+      await razorpay.subscriptions.cancel(user.razorpaySubscriptionId, true)
     } catch (razorpayError: any) {
       console.error('Razorpay cancel error:', razorpayError)
       // If subscription is already cancelled or not found in Razorpay, continue
