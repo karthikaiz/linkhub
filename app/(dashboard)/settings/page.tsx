@@ -5,6 +5,7 @@ import { getUserSubscriptionPlan, PLANS } from '@/lib/razorpay'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { SubscriptionButton } from '@/components/dashboard/subscription-button'
 import { DeleteAccountButton } from '@/components/dashboard/delete-account-button'
+import { UsernameEditor } from '@/components/dashboard/username-editor'
 import { formatDate } from '@/lib/utils'
 
 export default async function SettingsPage() {
@@ -24,6 +25,9 @@ export default async function SettingsPage() {
         <h1 className="text-2xl font-bold">Settings</h1>
         <p className="text-gray-600">Manage your account and subscription</p>
       </div>
+
+      {/* Username / Profile URL */}
+      <UsernameEditor currentUsername={user?.username || ''} />
 
       {/* Account Info */}
       <Card>
