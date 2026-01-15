@@ -219,19 +219,81 @@ export default function HomePage() {
           </div>
 
           {/* UPI Tip Jar - Gradient */}
-          <div className="group md:col-span-2 bg-gradient-to-r from-[#7c9885] to-[#5f7a64] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in animation-delay-400">
-            <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-bold text-lg mb-2 text-white">UPI Tip Jar</h3>
-                <p className="text-white/80 text-sm">Monetize Effortlessly. Let fans support your work directly via UPI. No high platform fees—just your money, instantly.</p>
-              </div>
+          <div className="group bg-gradient-to-br from-[#7c9885] to-[#5f7a64] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in animation-delay-400">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </div>
+            <h3 className="font-bold text-lg mb-2 text-white">UPI Tip Jar</h3>
+            <p className="text-white/80 text-sm">Monetize Effortlessly. Let fans support you directly via UPI. No platform fees.</p>
           </div>
+        </div>
+      </section>
+
+      {/* Social Proof Section */}
+      <section className="container mx-auto px-4 py-20">
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+          {[
+            { number: '10K+', label: 'Creators' },
+            { number: '50K+', label: 'Links Created' },
+            { number: '1M+', label: 'Link Clicks' },
+            { number: '99.9%', label: 'Uptime' },
+          ].map((stat, i) => (
+            <div key={i} className="text-center p-6 bg-white rounded-2xl border border-[#e8e4de] hover:border-[#7c9885] transition-colors">
+              <div className="text-3xl md:text-4xl font-bold text-[#7c9885] mb-1">{stat.number}</div>
+              <div className="text-[#6b6b66] text-sm">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Testimonials */}
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2d3029]">
+          Loved by Creators
+        </h2>
+        <p className="text-[#6b6b66] text-center mb-12 max-w-xl mx-auto">
+          See what Indian creators are saying about LinkHub
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            {
+              name: 'Priya Sharma',
+              handle: '@priyacreates',
+              role: 'Artist & Illustrator',
+              text: 'LinkHub made it so easy to share all my portfolio links. The UPI tip jar has been a game changer - I\'ve earned more tips in a month than I did all year!',
+              color: 'bg-[#7c9885]',
+            },
+            {
+              name: 'Rahul Verma',
+              handle: '@rahulvlogs',
+              role: 'YouTube Creator',
+              text: 'Finally a link-in-bio that understands Indian creators. The analytics help me see exactly which content my audience loves. Highly recommend!',
+              color: 'bg-[#c77b58]',
+            },
+            {
+              name: 'Ananya Patel',
+              handle: '@ananyasings',
+              role: 'Music Artist',
+              text: 'Clean design, fast loading, and the UPI integration is seamless. My fans can now support me directly without any international payment hassles.',
+              color: 'bg-[#2d3029]',
+            },
+          ].map((testimonial, i) => (
+            <div key={i} className="bg-white rounded-2xl p-6 border border-[#e8e4de] hover:shadow-lg transition-all duration-300">
+              <div className="flex items-center gap-3 mb-4">
+                <div className={`w-12 h-12 ${testimonial.color} rounded-full flex items-center justify-center text-white font-bold text-lg`}>
+                  {testimonial.name.charAt(0)}
+                </div>
+                <div>
+                  <div className="font-semibold text-[#2d3029]">{testimonial.name}</div>
+                  <div className="text-[#6b6b66] text-sm">{testimonial.handle}</div>
+                </div>
+              </div>
+              <p className="text-[#5c5c57] text-sm mb-4">"{testimonial.text}"</p>
+              <div className="text-[#7c9885] text-xs font-medium">{testimonial.role}</div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -316,31 +378,70 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20">
-        <div className="bg-gray-900 rounded-3xl p-12 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to simplify your online presence?
-          </h2>
-          <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Join thousands of creators who use LinkHub to share their content with the world.
-          </p>
-          <Link href="/register">
-            <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-              Create Your Free LinkHub
-            </Button>
-          </Link>
+        <div className="bg-[#2d3029] rounded-3xl p-12 text-center text-white relative overflow-hidden">
+          {/* Decorative blobs */}
+          <div className="absolute top-0 left-0 w-40 h-40 bg-[#7c9885]/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#c77b58]/20 rounded-full blur-3xl" />
+
+          <div className="relative">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Ready to grow your audience?
+            </h2>
+            <p className="text-[#a8a8a3] mb-8 max-w-xl mx-auto">
+              Join creators across India who use LinkHub to share their content and earn from their passion.
+            </p>
+            <Link href="/register">
+              <Button size="lg" className="bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl shadow-lg shadow-[#7c9885]/30 font-semibold">
+                Create Your Free LinkHub
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="container mx-auto px-4 py-8 border-t border-gray-200">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-gray-600">
-            &copy; {new Date().getFullYear()} LinkHub. All rights reserved.
+      <footer className="bg-[#fdfbf7] border-t border-[#e8e4de]">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            {/* Brand */}
+            <div className="md:col-span-2">
+              <Link href="/" className="text-2xl font-bold text-[#2d3029] inline-block mb-4">
+                Link<span className="text-[#7c9885]">Hub</span>
+              </Link>
+              <p className="text-[#6b6b66] text-sm max-w-sm">
+                The link-in-bio platform built for Indian creators. Share your links, collect tips via UPI, and grow your audience.
+              </p>
+            </div>
+
+            {/* Links */}
+            <div>
+              <h4 className="font-semibold text-[#2d3029] mb-4">Product</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="#features" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Features</Link></li>
+                <li><Link href="/register" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Pricing</Link></li>
+                <li><Link href="/login" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Login</Link></li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h4 className="font-semibold text-[#2d3029] mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/privacy" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Terms of Service</Link></li>
+                <li><Link href="/contact" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Contact</Link></li>
+              </ul>
+            </div>
           </div>
-          <div className="flex items-center gap-6 text-sm text-gray-600">
-            <Link href="/privacy" className="hover:text-gray-900">Privacy</Link>
-            <Link href="/terms" className="hover:text-gray-900">Terms</Link>
-            <Link href="/contact" className="hover:text-gray-900">Contact</Link>
+
+          {/* Bottom bar */}
+          <div className="pt-8 border-t border-[#e8e4de] flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-[#6b6b66] text-sm">
+              &copy; {new Date().getFullYear()} LinkHub. All rights reserved.
+            </p>
+            <p className="text-[#6b6b66] text-sm flex items-center gap-1">
+              Made with <span className="text-[#c77b58]">&#9829;</span> in India
+            </p>
           </div>
         </div>
       </footer>
