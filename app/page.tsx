@@ -14,19 +14,20 @@ export default function HomePage() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-4 py-4">
         <div className="container mx-auto">
-          <div className="flex items-center justify-between bg-white/80 backdrop-blur-xl rounded-2xl px-6 py-3 shadow-sm border border-[#e8e4de]">
-            <Link href="/" className="text-2xl font-bold text-[#2d3029]">
+          <div className="flex items-center justify-between bg-white/80 backdrop-blur-xl rounded-2xl px-4 sm:px-6 py-3 shadow-sm border border-[#e8e4de]">
+            <Link href="/" className="text-xl sm:text-2xl font-bold text-[#2d3029]">
               Link<span className="text-[#7c9885]">Hub</span>
             </Link>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <Link href="/login">
-                <Button variant="ghost" className="rounded-xl text-[#5c5c57] hover:text-[#2d3029] hover:bg-[#f5f2ed]">
+                <Button variant="ghost" className="rounded-xl text-[#5c5c57] hover:text-[#2d3029] hover:bg-[#f5f2ed] px-3 sm:px-4">
                   Login
                 </Button>
               </Link>
               <Link href="/register">
-                <Button className="rounded-xl bg-[#7c9885] hover:bg-[#6b8872] text-white shadow-md shadow-[#7c9885]/20 border-0">
-                  Get Started Free
+                <Button className="rounded-xl bg-[#7c9885] hover:bg-[#6b8872] text-white shadow-md shadow-[#7c9885]/20 border-0 text-sm sm:text-base px-3 sm:px-4">
+                  <span className="hidden sm:inline">Get Started Free</span>
+                  <span className="sm:hidden">Start Free</span>
                 </Button>
               </Link>
             </div>
@@ -217,67 +218,79 @@ export default function HomePage() {
 
       {/* Pricing Section */}
       <section className="container mx-auto px-4 py-20">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2d3029]">
           Simple Pricing
         </h2>
-        <p className="text-gray-600 text-center mb-12">
+        <p className="text-[#6b6b66] text-center mb-12">
           Start free, upgrade when you need more.
         </p>
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {/* Free Plan */}
-          <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-            <h3 className="font-bold text-2xl mb-2">Free</h3>
-            <p className="text-gray-500 mb-4">For personal use</p>
-            <div className="text-4xl font-bold mb-6">
-              ₹0<span className="text-lg text-gray-500 font-normal">/month</span>
+          <div className="bg-white rounded-2xl p-8 border-2 border-[#e8e4de] hover:border-[#7c9885] transition-colors">
+            <h3 className="font-bold text-2xl mb-2 text-[#2d3029]">Free</h3>
+            <p className="text-[#6b6b66] mb-4">For personal use</p>
+            <div className="text-4xl font-bold mb-6 text-[#2d3029]">
+              ₹0<span className="text-lg text-[#6b6b66] font-normal">/month</span>
             </div>
             <ul className="space-y-3 mb-8">
               {['Up to 5 links', 'Basic analytics', 'Standard themes', 'LinkHub branding'].map((item, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+                <li key={i} className="flex items-center gap-3 text-[#5c5c57]">
+                  <span className="w-5 h-5 rounded-full bg-[#7c9885]/20 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-[#7c9885]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
                   {item}
                 </li>
               ))}
             </ul>
             <Link href="/register" className="block">
-              <Button variant="outline" className="w-full">Get Started</Button>
+              <Button variant="outline" className="w-full rounded-xl border-2 border-[#e8e4de] hover:border-[#7c9885] text-[#2d3029] hover:bg-[#f5f2ed]">
+                Get Started
+              </Button>
             </Link>
           </div>
 
           {/* Pro Plan */}
-          <div className="bg-gradient-to-br from-primary-600 to-purple-600 rounded-2xl p-8 text-white relative overflow-hidden">
-            <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">
-              POPULAR
+          <div className="bg-[#2d3029] rounded-2xl p-8 text-white relative overflow-hidden shadow-xl shadow-[#2d3029]/30">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#7c9885]/20 rounded-full blur-2xl" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#c77b58]/20 rounded-full blur-2xl" />
+
+            <div className="relative">
+              <div className="inline-block bg-[#c77b58] text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+                MOST POPULAR
+              </div>
+              <h3 className="font-bold text-2xl mb-2">Pro</h3>
+              <p className="text-[#a8a8a3] mb-4">For creators & businesses</p>
+              <div className="text-4xl font-bold mb-6">
+                ₹299<span className="text-lg text-[#a8a8a3] font-normal">/month</span>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {[
+                  'Unlimited links',
+                  'Advanced analytics',
+                  'Premium themes',
+                  'No branding',
+                  'UPI Tip Jar',
+                  'Priority support',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-[#e8e4de]">
+                    <span className="w-5 h-5 rounded-full bg-[#7c9885] flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/register" className="block">
+                <Button className="w-full rounded-xl bg-[#7c9885] hover:bg-[#6b8872] text-white font-semibold shadow-lg shadow-[#7c9885]/30">
+                  Start Pro Trial
+                </Button>
+              </Link>
             </div>
-            <h3 className="font-bold text-2xl mb-2">Pro</h3>
-            <p className="text-primary-100 mb-4">For creators & businesses</p>
-            <div className="text-4xl font-bold mb-6">
-              ₹299<span className="text-lg text-primary-200 font-normal">/month</span>
-            </div>
-            <ul className="space-y-3 mb-8">
-              {[
-                'Unlimited links',
-                'Advanced analytics',
-                'Custom themes',
-                'No branding',
-                'Priority support',
-                'Custom CSS',
-              ].map((item, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  <svg className="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <Link href="/register" className="block">
-              <Button className="w-full bg-white text-primary-600 hover:bg-gray-100">
-                Start Pro Trial
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
