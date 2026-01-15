@@ -56,10 +56,9 @@ export default function HomePage() {
 
         {/* Subheadline */}
         <p className="text-xl md:text-2xl text-[#6b6b66] mb-10 max-w-2xl mx-auto animate-slide-up">
-          Create your minimal link-in-bio with
-          <span className="text-[#7c9885] font-semibold"> UPI tips</span>,
-          <span className="text-[#c77b58] font-semibold"> analytics</span> &
-          <span className="text-[#2d3029] font-semibold"> clean design</span>
+          Turn Your Followers into a Business. All in One Click with 
+          <span className="text-[#7c9885] font-semibold"> UPI tips</span> &
+          <span className="text-[#c77b58] font-semibold"> detailed user analytics</span> 
         </p>
 
         {/* CTA Buttons */}
@@ -175,34 +174,34 @@ export default function HomePage() {
           {[
             {
               title: 'Easy to Use',
-              description: 'Set up your page in under 2 minutes. No technical skills required.',
+              description: 'Launch in 120 Seconds. No code, no stress. Just your best links in a beautiful layout.',
               icon: '✨',
             },
             {
               title: 'Fully Customizable',
-              description: 'Choose colors, fonts, and layouts that match your brand.',
+              description: 'Your Brand, Your Rules. Match your LinkHub to your Instagram aesthetic with custom themes and fonts.',
               icon: '🎨',
             },
             {
               title: 'Analytics',
-              description: 'Track clicks and views to understand your audience.',
+              description: 'Know Your Superfans. See exactly where your traffic comes from and which links are winning.',
               icon: '📊',
             },
             {
               title: 'Mobile Optimized',
-              description: 'Looks perfect on every device, every time.',
+              description: "Blazing Fast on Every Phone. Designed for India's mobile-first audience. No lag, just clicks.",
               icon: '📱',
             },
             {
-              title: 'Fast & Reliable',
-              description: 'Lightning-fast load times. 99.9% uptime guaranteed.',
+              title: 'UPI Tip Jar',
+              description: 'Monetize Effortlessly. Let fans support your work directly via UPI. No high platform fees—just your money..',
               icon: '⚡',
             },
-            {
-              title: 'SEO Friendly',
-              description: 'Help people discover you with optimized pages.',
-              icon: '🔍',
-            },
+            // {
+            //   title: 'SEO Friendly',
+            //   description: 'Help people discover you with optimized pages.',
+            //   icon: '🔍',
+            // },
           ].map((feature, i) => (
             <div
               key={i}
