@@ -30,6 +30,7 @@ export function TipJar({
   const [customAmount, setCustomAmount] = useState('')
   const [copied, setCopied] = useState(false)
   const [showApps, setShowApps] = useState(false)
+  const [tipSent, setTipSent] = useState(false)
 
   const amount = selectedAmount || (customAmount ? parseInt(customAmount) : 0)
 
@@ -67,6 +68,44 @@ export function TipJar({
     } catch (err) {
       console.error('Failed to copy:', err)
     }
+  }
+
+  // Show thank you screen after tip is sent
+  if (tipSent) {
+    return (
+      <div
+        className="rounded-2xl p-6 text-center"
+        style={{
+          backgroundColor: isGlass ? 'rgba(255,255,255,0.1)' : `${buttonColor}10`,
+          backdropFilter: isGlass ? 'blur(10px)' : 'none',
+          border: isGlass ? '1px solid rgba(255,255,255,0.2)' : 'none',
+        }}
+      >
+        <div
+          className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center animate-bounce"
+          style={{ backgroundColor: buttonColor }}
+        >
+          <Heart className="w-8 h-8" style={{ color: textColor }} fill="currentColor" />
+        </div>
+        <h3 className="text-xl font-bold mb-2" style={{ color: profileTextColor }}>
+          Thank You! 🎉
+        </h3>
+        <p className="opacity-80 mb-4" style={{ color: profileTextColor }}>
+          Your support means the world to {userName}!
+        </p>
+        <button
+          onClick={() => {
+            setTipSent(false)
+            setSelectedAmount(null)
+            setCustomAmount('')
+          }}
+          className="text-sm underline opacity-60 hover:opacity-100 transition-opacity"
+          style={{ color: profileTextColor }}
+        >
+          Send another tip
+        </button>
+      </div>
+    )
   }
 
   return (
@@ -153,6 +192,19 @@ export function TipJar({
           <p className="text-xs mt-1 opacity-60" style={{ color: profileTextColor }}>
             GPay • PhonePe • Paytm • BHIM • Any UPI app
           </p>
+
+          {/* Confirmation button */}
+          <button
+            onClick={() => setTipSent(true)}
+            className="mt-4 py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
+            style={{
+              backgroundColor: buttonColor,
+              color: textColor,
+            }}
+          >
+            <Heart className="w-5 h-5" />
+            I've Sent the Tip!
+          </button>
         </div>
       )}
 
