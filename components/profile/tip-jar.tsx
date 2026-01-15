@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Heart, Coffee, IndianRupee, Copy, Check, QrCode } from 'lucide-react'
+import { Heart, Coffee, IndianRupee, Copy, Check, QrCode, Smartphone } from 'lucide-react'
 
 interface TipJarProps {
   upiId: string
@@ -29,23 +29,20 @@ export function TipJar({
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null)
   const [customAmount, setCustomAmount] = useState('')
   const [copied, setCopied] = useState(false)
-  const [showQR, setShowQR] = useState(false)
+  const [showApps, setShowApps] = useState(false)
 
   const amount = selectedAmount || (customAmount ? parseInt(customAmount) : 0)
 
   // Generate UPI payment URL
   const getUpiUrl = () => {
-    const params = new URLSearchParams({
-      pa: upiId,
-      pn: userName,
-      cu: 'INR',
-      am: amount.toString(),
-      tn: `Tip for ${userName}`,
-    })
-    return `upi://pay?${params.toString()}`
+    const pa = encodeURIComponent(upiId)
+    const pn = encodeURIComponent(userName.replace(/[^a-zA-Z0-9 ]/g, ''))
+    const tn = encodeURIComponent(`Tip for ${userName}`)
+    const am = amount.toString()
+    return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}`
   }
 
-  // Generate UPI QR code URL (using a free QR service)
+  // Generate UPI QR code URL
   const getQrUrl = () => {
     const upiUrl = getUpiUrl()
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`
@@ -53,7 +50,7 @@ export function TipJar({
 
   const copyUpiId = async () => {
     try {
-      await navigator.clipboard.writeText(upiId)
+      await navigator.clipboard.writeText(`${upiId}`)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
@@ -61,9 +58,14 @@ export function TipJar({
     }
   }
 
-  const handlePayment = () => {
-    if (amount > 0) {
-      window.location.href = getUpiUrl()
+  const copyPaymentDetails = async () => {
+    try {
+      const details = `UPI ID: ${upiId}\nAmount: ₹${amount}\nNote: Tip for ${userName}`
+      await navigator.clipboard.writeText(details)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
     }
   }
 
@@ -139,46 +141,71 @@ export function TipJar({
         />
       </div>
 
-      {/* Payment buttons */}
-      <div className="flex gap-2">
-        <button
-          onClick={handlePayment}
-          disabled={amount <= 0}
-          className="flex-1 py-3 px-4 rounded-xl font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50 flex items-center justify-center gap-2"
-          style={{
-            backgroundColor: buttonColor,
-            color: textColor,
-          }}
-        >
-          <Heart className="w-5 h-5" />
-          {amount > 0 ? `Pay ₹${amount}` : 'Select Amount'}
-        </button>
-        <button
-          onClick={() => setShowQR(!showQR)}
-          className="py-3 px-4 rounded-xl transition-all duration-300 hover:scale-105"
-          style={{
-            backgroundColor: `${buttonColor}20`,
-            color: profileTextColor,
-          }}
-          title="Show QR Code"
-        >
-          <QrCode className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* QR Code */}
-      {showQR && amount > 0 && (
-        <div className="mt-4 flex flex-col items-center">
-          <div className="bg-white p-3 rounded-xl">
-            <img src={getQrUrl()} alt="UPI QR Code" className="w-40 h-40" />
+      {/* QR Code - Always visible when amount selected */}
+      {amount > 0 && (
+        <div className="flex flex-col items-center mb-4">
+          <div className="bg-white p-3 rounded-xl shadow-lg">
+            <img src={getQrUrl()} alt="UPI QR Code" className="w-44 h-44" />
           </div>
-          <p className="text-xs mt-2 opacity-70" style={{ color: profileTextColor }}>
-            Scan with any UPI app
+          <p className="text-sm mt-3 font-medium" style={{ color: profileTextColor }}>
+            Scan with any UPI app to pay ₹{amount}
+          </p>
+          <p className="text-xs mt-1 opacity-60" style={{ color: profileTextColor }}>
+            GPay • PhonePe • Paytm • BHIM • Any UPI app
           </p>
         </div>
       )}
 
-      {/* UPI ID */}
+      {/* Manual payment option */}
+      {amount > 0 && (
+        <div className="space-y-3">
+          <button
+            onClick={() => setShowApps(!showApps)}
+            className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
+            style={{
+              backgroundColor: `${buttonColor}20`,
+              color: profileTextColor,
+            }}
+          >
+            <Smartphone className="w-5 h-5" />
+            {showApps ? 'Hide Manual Steps' : 'Pay Manually'}
+          </button>
+
+          {showApps && (
+            <div
+              className="p-4 rounded-xl text-sm space-y-3"
+              style={{
+                backgroundColor: isGlass ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.05)',
+              }}
+            >
+              <p className="font-medium" style={{ color: profileTextColor }}>
+                Steps to pay manually:
+              </p>
+              <ol className="list-decimal list-inside space-y-2 opacity-80" style={{ color: profileTextColor }}>
+                <li>Open your UPI app (GPay, PhonePe, Paytm)</li>
+                <li>Select &quot;Pay by UPI ID&quot; or &quot;Send Money&quot;</li>
+                <li>Enter UPI ID: <span className="font-mono font-semibold">{upiId}</span></li>
+                <li>Enter amount: <span className="font-semibold">₹{amount}</span></li>
+                <li>Add note: Tip for {userName}</li>
+                <li>Complete the payment</li>
+              </ol>
+              <button
+                onClick={copyPaymentDetails}
+                className="w-full py-2 px-4 rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
+                style={{
+                  backgroundColor: buttonColor,
+                  color: textColor,
+                }}
+              >
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? 'Copied!' : 'Copy Payment Details'}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* UPI ID display */}
       <div className="mt-4 flex items-center justify-center gap-2">
         <span className="text-xs opacity-50" style={{ color: profileTextColor }}>
           UPI: {upiId}
@@ -195,6 +222,13 @@ export function TipJar({
           )}
         </button>
       </div>
+
+      {/* No amount selected message */}
+      {amount <= 0 && (
+        <p className="text-center text-sm opacity-60 mt-2" style={{ color: profileTextColor }}>
+          Select an amount above to see payment QR code
+        </p>
+      )}
     </div>
   )
 }
