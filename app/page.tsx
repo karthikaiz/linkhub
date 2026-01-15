@@ -167,51 +167,71 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section id="features" className="container mx-auto px-4 py-20">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2d3029]">
           Everything You Need
         </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            {
-              title: 'Easy to Use',
-              description: 'Launch in 120 Seconds. No code, no stress. Just your best links in a beautiful layout.',
-              icon: '✨',
-            },
-            {
-              title: 'Fully Customizable',
-              description: 'Your Brand, Your Rules. Match your LinkHub to your Instagram aesthetic with custom themes and fonts.',
-              icon: '🎨',
-            },
-            {
-              title: 'Analytics',
-              description: 'Know Your Superfans. See exactly where your traffic comes from and which links are winning.',
-              icon: '📊',
-            },
-            {
-              title: 'Mobile Optimized',
-              description: "Blazing Fast on Every Phone. Designed for India's mobile-first audience. No lag, just clicks.",
-              icon: '📱',
-            },
-            {
-              title: 'UPI Tip Jar',
-              description: 'Monetize Effortlessly. Let fans support your work directly via UPI. No high platform fees—just your money..',
-              icon: '⚡',
-            },
-            // {
-            //   title: 'SEO Friendly',
-            //   description: 'Help people discover you with optimized pages.',
-            //   icon: '🔍',
-            // },
-          ].map((feature, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
-            >
-              <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+        <p className="text-[#6b6b66] text-center mb-12 max-w-xl mx-auto">
+          Powerful tools designed for Indian creators to grow their audience and monetize effortlessly.
+        </p>
+        <div className="grid md:grid-cols-3 gap-5">
+          {/* Easy to Use - Sage */}
+          <div className="group bg-[#7c9885] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
-          ))}
+            <h3 className="font-bold text-lg mb-2 text-white">Easy to Use</h3>
+            <p className="text-white/80 text-sm">Launch in 120 Seconds. No code, no stress. Just your best links in a beautiful layout.</p>
+          </div>
+
+          {/* Fully Customizable - Terracotta */}
+          <div className="group bg-[#c77b58] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in animation-delay-100">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+              </svg>
+            </div>
+            <h3 className="font-bold text-lg mb-2 text-white">Fully Customizable</h3>
+            <p className="text-white/80 text-sm">Your Brand, Your Rules. Match your LinkHub to your Instagram aesthetic with custom themes.</p>
+          </div>
+
+          {/* Analytics - Dark */}
+          <div className="group bg-[#2d3029] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in animation-delay-200">
+            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 className="font-bold text-lg mb-2 text-white">Analytics</h3>
+            <p className="text-white/70 text-sm">Know Your Superfans. See exactly where your traffic comes from and which links are winning.</p>
+          </div>
+
+          {/* Mobile Optimized - Light with border */}
+          <div className="group bg-white rounded-2xl p-6 border-2 border-[#e8e4de] hover:border-[#7c9885] shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-fade-in animation-delay-300">
+            <div className="w-12 h-12 bg-[#7c9885]/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg className="w-6 h-6 text-[#7c9885]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="font-bold text-lg mb-2 text-[#2d3029]">Mobile Optimized</h3>
+            <p className="text-[#6b6b66] text-sm">Blazing Fast on Every Phone. Designed for India's mobile-first audience. No lag, just clicks.</p>
+          </div>
+
+          {/* UPI Tip Jar - Gradient */}
+          <div className="group md:col-span-2 bg-gradient-to-r from-[#7c9885] to-[#5f7a64] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in animation-delay-400">
+            <div className="flex flex-col md:flex-row md:items-center gap-4">
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg mb-2 text-white">UPI Tip Jar</h3>
+                <p className="text-white/80 text-sm">Monetize Effortlessly. Let fans support your work directly via UPI. No high platform fees—just your money, instantly.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
