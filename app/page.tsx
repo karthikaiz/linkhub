@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button'
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#fdfbf7] overflow-hidden">
-      {/* Subtle Organic Shapes */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#d4e4d7]/40 rounded-full blur-3xl animate-blob" />
-        <div className="absolute top-1/3 -left-20 w-80 h-80 bg-[#e8d5c4]/50 rounded-full blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-[#c9dcd0]/40 rounded-full blur-3xl animate-blob animation-delay-4000" />
+      {/* Subtle Organic Shapes - Hidden on mobile */}
+      <div className="hidden md:block fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#d4e4d7]/30 rounded-full blur-3xl animate-blob" />
+        <div className="absolute top-1/3 -left-20 w-80 h-80 bg-[#e8d5c4]/30 rounded-full blur-3xl animate-blob animation-delay-2000" />
+        <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-[#c9dcd0]/30 rounded-full blur-3xl animate-blob animation-delay-4000" />
       </div>
 
       {/* Navigation */}
