@@ -90,21 +90,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-purple-50 px-4 py-8">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-[#fdfbf7] px-4 py-8">
+      <Card className="w-full max-w-md border-[#e8e4de] shadow-lg">
         <CardHeader className="text-center">
-          <Link href="/" className="text-2xl font-bold text-primary-600 mb-2">
-            LinkHub
+          <Link href="/" className="text-2xl font-bold text-[#2d3029] mb-2 inline-block">
+            Link<span className="text-[#7c9885]">Hub</span>
           </Link>
-          <CardTitle className="text-2xl">Create your account</CardTitle>
-          <CardDescription>Start sharing your links in minutes</CardDescription>
+          <CardTitle className="text-2xl text-[#2d3029]">Create your account</CardTitle>
+          <CardDescription className="text-[#6b6b66]">Start sharing your links in minutes</CardDescription>
         </CardHeader>
         <CardContent>
           {/* Google Sign Up */}
           <Button
             type="button"
             variant="outline"
-            className="w-full mb-4 flex items-center justify-center gap-2"
+            className="w-full mb-4 flex items-center justify-center gap-2 rounded-xl border-[#e8e4de] hover:border-[#7c9885] hover:bg-[#f5f2ed] text-[#2d3029]"
             onClick={handleGoogleSignIn}
             disabled={isGoogleLoading}
           >
@@ -126,39 +126,41 @@ export default function RegisterPage() {
 
           <div className="relative mb-4">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-300" />
+              <span className="w-full border-t border-[#e8e4de]" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">Or continue with email</span>
+              <span className="bg-white px-2 text-[#6b6b66]">Or continue with email</span>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Name</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Name</label>
               <Input
                 type="text"
                 placeholder="John Doe"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="rounded-xl border-[#e8e4de] focus:border-[#7c9885] focus:ring-[#7c9885]"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Email</label>
               <Input
                 type="email"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="rounded-xl border-[#e8e4de] focus:border-[#7c9885] focus:ring-[#7c9885]"
                 error={errors.email}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Username</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Username</label>
               <div className="flex">
-                <span className="inline-flex items-center bg-gray-100 border border-r-0 border-gray-300 rounded-l-md px-3 text-gray-500 text-sm h-10">
+                <span className="inline-flex items-center bg-[#f5f2ed] border border-r-0 border-[#e8e4de] rounded-l-xl px-3 text-[#6b6b66] text-sm h-10">
                   linkhub.com/
                 </span>
                 <input
@@ -166,31 +168,32 @@ export default function RegisterPage() {
                   placeholder="yourname"
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value.toLowerCase() })}
-                  className={`flex h-10 w-full rounded-r-md rounded-l-none border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${errors.username ? 'border-red-500 focus:ring-red-500' : ''}`}
+                  className={`flex h-10 w-full rounded-r-xl rounded-l-none border border-[#e8e4de] bg-white px-3 py-2 text-sm placeholder:text-[#a8a8a3] focus:outline-none focus:ring-2 focus:ring-[#7c9885] focus:border-transparent ${errors.username ? 'border-red-500 focus:ring-red-500' : ''}`}
                   required
                 />
               </div>
               {errors.username && <p className="mt-1 text-sm text-red-500">{errors.username}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Password</label>
               <Input
                 type="password"
                 placeholder="Create a password (min 6 characters)"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="rounded-xl border-[#e8e4de] focus:border-[#7c9885] focus:ring-[#7c9885]"
                 error={errors.password}
                 required
               />
             </div>
-            <Button type="submit" className="w-full" isLoading={isLoading}>
+            <Button type="submit" className="w-full rounded-xl bg-[#7c9885] hover:bg-[#6b8872] text-white" isLoading={isLoading}>
               Create Account
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm">
-            <span className="text-gray-600">Already have an account? </span>
-            <Link href="/login" className="text-primary-600 hover:underline font-medium">
+            <span className="text-[#6b6b66]">Already have an account? </span>
+            <Link href="/login" className="text-[#7c9885] hover:underline font-medium">
               Sign in
             </Link>
           </div>

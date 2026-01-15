@@ -54,21 +54,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-purple-50 px-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-[#fdfbf7] px-4">
+      <Card className="w-full max-w-md border-[#e8e4de] shadow-lg">
         <CardHeader className="text-center">
-          <Link href="/" className="text-2xl font-bold text-primary-600 mb-2">
-            LinkHub
+          <Link href="/" className="text-2xl font-bold text-[#2d3029] mb-2 inline-block">
+            Link<span className="text-[#7c9885]">Hub</span>
           </Link>
-          <CardTitle className="text-2xl">Welcome back</CardTitle>
-          <CardDescription>Sign in to your account to continue</CardDescription>
+          <CardTitle className="text-2xl text-[#2d3029]">Welcome back</CardTitle>
+          <CardDescription className="text-[#6b6b66]">Sign in to your account to continue</CardDescription>
         </CardHeader>
         <CardContent>
           {/* Google Sign In */}
           <Button
             type="button"
             variant="outline"
-            className="w-full mb-4 flex items-center justify-center gap-2"
+            className="w-full mb-4 flex items-center justify-center gap-2 rounded-xl border-[#e8e4de] hover:border-[#7c9885] hover:bg-[#f5f2ed] text-[#2d3029]"
             onClick={handleGoogleSignIn}
             disabled={isGoogleLoading}
           >
@@ -90,42 +90,44 @@ export default function LoginPage() {
 
           <div className="relative mb-4">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-300" />
+              <span className="w-full border-t border-[#e8e4de]" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">Or continue with email</span>
+              <span className="bg-white px-2 text-[#6b6b66]">Or continue with email</span>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Email</label>
               <Input
                 type="email"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="rounded-xl border-[#e8e4de] focus:border-[#7c9885] focus:ring-[#7c9885]"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Password</label>
               <Input
                 type="password"
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="rounded-xl border-[#e8e4de] focus:border-[#7c9885] focus:ring-[#7c9885]"
                 required
               />
             </div>
-            <Button type="submit" className="w-full" isLoading={isLoading}>
+            <Button type="submit" className="w-full rounded-xl bg-[#7c9885] hover:bg-[#6b8872] text-white" isLoading={isLoading}>
               Sign In
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm">
-            <span className="text-gray-600">Don&apos;t have an account? </span>
-            <Link href="/register" className="text-primary-600 hover:underline font-medium">
+            <span className="text-[#6b6b66]">Don&apos;t have an account? </span>
+            <Link href="/register" className="text-[#7c9885] hover:underline font-medium">
               Sign up
             </Link>
           </div>

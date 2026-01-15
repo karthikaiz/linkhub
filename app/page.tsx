@@ -298,7 +298,7 @@ export default function HomePage() {
       </section>
 
       {/* Pricing Section */}
-      <section className="container mx-auto px-4 py-20">
+      <section id="pricing" className="container mx-auto px-4 py-20">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2d3029]">
           Simple Pricing
         </h2>
@@ -418,7 +418,7 @@ export default function HomePage() {
               <h4 className="font-semibold text-[#2d3029] mb-4">Product</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link href="#features" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Features</Link></li>
-                <li><Link href="/register" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Pricing</Link></li>
+                <li><Link href="#pricing" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Pricing</Link></li>
                 <li><Link href="/login" className="text-[#6b6b66] hover:text-[#7c9885] transition-colors">Login</Link></li>
               </ul>
             </div>
