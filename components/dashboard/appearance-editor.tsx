@@ -382,12 +382,12 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
             <CardTitle className="text-[#2d3029]">Button Style</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {buttonStyles.map((style) => (
                 <button
                   key={style.id}
                   onClick={() => setSettings({ ...settings, buttonStyle: style.id })}
-                  className={`flex-1 min-w-[70px] py-3 px-4 border-2 transition-all text-[#2d3029] ${style.class} ${
+                  className={`py-3 px-2 border-2 transition-all text-[#2d3029] text-sm font-medium rounded-xl ${
                     settings.buttonStyle === style.id
                       ? 'border-[#7c9885] bg-[#7c9885]/10'
                       : 'border-[#e8e4de] hover:border-[#7c9885]/50'

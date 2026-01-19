@@ -109,7 +109,7 @@ export default async function AnalyticsPage() {
   const totalBrowserViews = browserStats.reduce((acc, b) => acc + b._count.id, 0)
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-8 animate-fade-in overflow-hidden">
       <div>
         <h1 className="text-2xl font-bold text-[#2d3029]">Analytics</h1>
         <p className="text-[#6b6b66] mt-1">Track your page performance</p>
@@ -135,9 +135,9 @@ export default async function AnalyticsPage() {
         })}
       </div>
 
-      <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
+      <div className="grid gap-6 sm:gap-8 md:grid-cols-2 overflow-hidden">
         {/* Top Links */}
-        <Card className="border-[#e8e4de] bg-white">
+        <Card className="border-[#e8e4de] bg-white overflow-hidden">
           <CardHeader className="p-4 sm:p-6">
             <CardTitle className="text-base sm:text-lg text-[#2d3029]">Top Performing Links</CardTitle>
           </CardHeader>
@@ -169,7 +169,7 @@ export default async function AnalyticsPage() {
         </Card>
 
         {/* Device Breakdown */}
-        <Card className="border-[#e8e4de] bg-white">
+        <Card className="border-[#e8e4de] bg-white overflow-hidden">
           <CardHeader className="p-4 sm:p-6">
             <CardTitle className="text-base sm:text-lg text-[#2d3029]">Devices (Last 30 days)</CardTitle>
           </CardHeader>
@@ -213,7 +213,7 @@ export default async function AnalyticsPage() {
         </Card>
 
         {/* Browser Breakdown */}
-        <Card className="md:col-span-2 border-[#e8e4de] bg-white">
+        <Card className="md:col-span-2 border-[#e8e4de] bg-white overflow-hidden">
           <CardHeader className="p-4 sm:p-6">
             <CardTitle className="text-base sm:text-lg text-[#2d3029]">Browsers (Last 30 days)</CardTitle>
           </CardHeader>

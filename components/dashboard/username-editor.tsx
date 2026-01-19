@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import toast from 'react-hot-toast'
-import { Copy, Check, ExternalLink } from 'lucide-react'
+import { Copy, Check, ExternalLink, Pencil, X } from 'lucide-react'
 
 interface UsernameEditorProps {
   currentUsername: string
@@ -13,6 +13,7 @@ interface UsernameEditorProps {
 
 export function UsernameEditor({ currentUsername }: UsernameEditorProps) {
   const [username, setUsername] = useState(currentUsername)
+  const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecking, setIsChecking] = useState(false)
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null)
@@ -107,6 +108,12 @@ export function UsernameEditor({ currentUsername }: UsernameEditorProps) {
   const hasChanges = username !== currentUsername
   const isValid = validateUsername(username)
 
+  const handleCancel = () => {
+    setUsername(currentUsername)
+    setIsEditing(false)
+    setIsAvailable(null)
+  }
+
   return (
     <Card className="border-[#e8e4de] bg-white">
       <CardHeader>
@@ -114,67 +121,97 @@ export function UsernameEditor({ currentUsername }: UsernameEditorProps) {
         <CardDescription className="text-[#6b6b66]">Customize your unique profile link</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* URL Preview */}
-        <div className="flex items-center gap-2 p-3 bg-[#f9f9f7] rounded-xl border border-[#e8e4de]">
-          <span className="text-[#6b6b66] text-sm shrink-0">{appUrl.replace('https://', '')}/</span>
-          <Input
-            value={username}
-            onChange={(e) => handleUsernameChange(e.target.value)}
-            className="flex-1 border-0 bg-transparent p-0 font-medium text-[#2d3029] focus-visible:ring-0"
-            placeholder="yourname"
-          />
-          <button
-            onClick={copyToClipboard}
-            className="p-2 hover:bg-[#f5f2ed] rounded-lg transition-colors"
-            title="Copy link"
-          >
-            {copied ? (
-              <Check className="w-4 h-4 text-[#7c9885]" />
-            ) : (
-              <Copy className="w-4 h-4 text-[#6b6b66]" />
-            )}
-          </button>
-          <a
-            href={profileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 hover:bg-[#f5f2ed] rounded-lg transition-colors"
-            title="Open profile"
-          >
-            <ExternalLink className="w-4 h-4 text-[#6b6b66]" />
-          </a>
-        </div>
-
-        {/* Validation feedback */}
-        {username && (
-          <div className="text-sm">
-            {!isValid && (
-              <p className="text-red-500">
-                Username must be 3-30 characters, only letters, numbers, underscores, and hyphens
-              </p>
-            )}
-            {isValid && isChecking && (
-              <p className="text-[#6b6b66]">Checking availability...</p>
-            )}
-            {isValid && !isChecking && isAvailable === true && username !== currentUsername && (
-              <p className="text-[#7c9885]">Username is available!</p>
-            )}
-            {isValid && !isChecking && isAvailable === false && (
-              <p className="text-red-500">Username is already taken</p>
-            )}
-          </div>
+        {/* URL Display (non-editing mode) */}
+        {!isEditing && (
+          <>
+            <div className="flex items-center gap-2 p-3 bg-[#f9f9f7] rounded-xl border border-[#e8e4de]">
+              <span className="text-[#6b6b66] text-sm shrink-0">{appUrl.replace('https://', '')}/</span>
+              <span className="flex-1 font-medium text-[#2d3029] truncate">{currentUsername}</span>
+              <button
+                onClick={copyToClipboard}
+                className="p-2 hover:bg-[#f5f2ed] rounded-lg transition-colors"
+                title="Copy link"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4 text-[#7c9885]" />
+                ) : (
+                  <Copy className="w-4 h-4 text-[#6b6b66]" />
+                )}
+              </button>
+              <a
+                href={`${appUrl}/${currentUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:bg-[#f5f2ed] rounded-lg transition-colors"
+                title="Open profile"
+              >
+                <ExternalLink className="w-4 h-4 text-[#6b6b66]" />
+              </a>
+            </div>
+            <Button
+              onClick={() => setIsEditing(true)}
+              variant="outline"
+              className="w-full rounded-xl border-[#e8e4de] text-[#2d3029] hover:bg-[#f5f2ed] hover:border-[#7c9885]"
+            >
+              <Pencil className="w-4 h-4 mr-2" />
+              Edit URL
+            </Button>
+          </>
         )}
 
-        {/* Save button */}
-        {hasChanges && (
-          <Button
-            onClick={handleSave}
-            disabled={!isValid || !isAvailable || isLoading}
-            isLoading={isLoading}
-            className="w-full bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl"
-          >
-            Save New Username
-          </Button>
+        {/* URL Editor (editing mode) */}
+        {isEditing && (
+          <>
+            <div className="flex items-center gap-2 p-3 bg-[#f9f9f7] rounded-xl border border-[#7c9885]">
+              <span className="text-[#6b6b66] text-sm shrink-0">{appUrl.replace('https://', '')}/</span>
+              <Input
+                value={username}
+                onChange={(e) => handleUsernameChange(e.target.value)}
+                className="flex-1 border-0 bg-transparent p-0 font-medium text-[#2d3029] focus-visible:ring-0"
+                placeholder="yourname"
+                autoFocus
+              />
+            </div>
+
+            {/* Validation feedback */}
+            {username && (
+              <div className="text-sm">
+                {!isValid && (
+                  <p className="text-red-500">
+                    Username must be 3-30 characters, only letters, numbers, underscores, and hyphens
+                  </p>
+                )}
+                {isValid && isChecking && (
+                  <p className="text-[#6b6b66]">Checking availability...</p>
+                )}
+                {isValid && !isChecking && isAvailable === true && username !== currentUsername && (
+                  <p className="text-[#7c9885]">Username is available!</p>
+                )}
+                {isValid && !isChecking && isAvailable === false && (
+                  <p className="text-red-500">Username is already taken</p>
+                )}
+              </div>
+            )}
+
+            {/* Action buttons */}
+            <div className="flex gap-3">
+              <Button
+                onClick={handleSave}
+                disabled={!isValid || !isAvailable || isLoading || !hasChanges}
+                isLoading={isLoading}
+                className="flex-1 bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl"
+              >
+                Save Changes
+              </Button>
+              <Button
+                onClick={handleCancel}
+                variant="outline"
+                className="rounded-xl border-[#e8e4de] text-[#2d3029] hover:bg-[#f5f2ed]"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </>
         )}
       </CardContent>
     </Card>
