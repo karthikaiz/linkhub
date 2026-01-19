@@ -216,7 +216,7 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
         <Button
           onClick={() => setIsAdding(true)}
           disabled={!canAddMore}
-          className="w-full"
+          className="w-full bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl"
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Link
@@ -230,24 +230,24 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
 
       {/* Add Link Form */}
       {isAdding && (
-        <Card>
+        <Card className="border-[#e8e4de] bg-white">
           <CardContent className="p-4 space-y-4">
             {/* Link Type Selector */}
             <div>
-              <label className="block text-sm font-medium mb-2">Link Type</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Link Type</label>
               <div className="grid grid-cols-4 gap-2">
                 {LINK_TYPES.map((type) => (
                   <button
                     key={type.id}
                     onClick={() => setNewLink({ ...newLink, type: type.id })}
-                    className={`p-3 rounded-lg border-2 text-center transition-all ${
+                    className={`p-3 rounded-xl border-2 text-center transition-all ${
                       newLink.type === type.id
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-[#7c9885] bg-[#7c9885]/10'
+                        : 'border-[#e8e4de] hover:border-[#7c9885]/50'
                     }`}
                   >
                     <span className="text-xl">{type.icon}</span>
-                    <p className="text-xs mt-1">{type.name}</p>
+                    <p className="text-xs mt-1 text-[#5c5c57]">{type.name}</p>
                   </button>
                 ))}
               </div>
@@ -276,13 +276,13 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
                   value={newLink.embedUrl}
                   onChange={(e) => setNewLink({ ...newLink, embedUrl: e.target.value, url: e.target.value })}
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-[#6b6b66] mt-1">
                   This will be embedded directly on your profile
                 </p>
               </div>
             )}
             <div className="flex gap-2">
-              <Button onClick={handleAddLink} isLoading={isLoading}>
+              <Button onClick={handleAddLink} isLoading={isLoading} className="bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl">
                 <Check className="w-4 h-4 mr-2" />
                 Add Link
               </Button>
@@ -292,6 +292,7 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
                   setIsAdding(false)
                   setNewLink({ title: '', url: '', type: 'link', embedUrl: '' })
                 }}
+                className="rounded-xl border-[#e8e4de] text-[#2d3029] hover:bg-[#f5f2ed] hover:border-[#7c9885]"
               >
                 <X className="w-4 h-4 mr-2" />
                 Cancel
@@ -304,8 +305,8 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
       {/* Links List */}
       <div className="space-y-3">
         {links.length === 0 && !isAdding ? (
-          <Card>
-            <CardContent className="p-8 text-center text-gray-500">
+          <Card className="border-[#e8e4de] bg-white">
+            <CardContent className="p-8 text-center text-[#6b6b66]">
               <p>No links yet. Click "Add Link" to create your first one!</p>
             </CardContent>
           </Card>
@@ -323,7 +324,7 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
                 draggedIndex === index ? 'opacity-50' : ''
               } ${
                 dragOverIndex === index
-                  ? 'border-t-2 border-primary-500 pt-2'
+                  ? 'border-t-2 border-[#7c9885] pt-2'
                   : ''
               }`}
             >
@@ -345,14 +346,14 @@ export function LinksManager({ initialLinks, maxLinks, isPro }: LinksManagerProp
 
       {/* Upgrade prompt */}
       {!isPro && links.length >= 3 && (
-        <Card className="bg-gray-900 text-white border-0 shadow-xl">
+        <Card className="bg-[#2d3029] text-white border-0 shadow-xl">
           <CardContent className="p-6 text-center">
             <h3 className="font-bold text-lg mb-2">Want unlimited links?</h3>
             <p className="mb-4 opacity-80">
               Upgrade to Pro for unlimited links, custom themes, and more!
             </p>
             <Link href="/settings">
-              <Button className="bg-white text-gray-900 hover:bg-gray-100 shadow-lg">
+              <Button className="bg-[#c77b58] text-white hover:bg-[#b56a4a] shadow-lg rounded-xl">
                 Upgrade to Pro
               </Button>
             </Link>
@@ -397,24 +398,24 @@ function LinkCard({
 
   if (isEditing) {
     return (
-      <Card>
+      <Card className="border-[#e8e4de] bg-white">
         <CardContent className="p-4 space-y-4">
           {/* Link Type Selector */}
           <div>
-            <label className="block text-sm font-medium mb-2">Link Type</label>
+            <label className="block text-sm font-medium mb-2 text-[#2d3029]">Link Type</label>
             <div className="grid grid-cols-4 gap-2">
               {LINK_TYPES.map((type) => (
                 <button
                   key={type.id}
                   onClick={() => setEditData({ ...editData, type: type.id })}
-                  className={`p-2 rounded-lg border-2 text-center transition-all ${
+                  className={`p-2 rounded-xl border-2 text-center transition-all ${
                     editData.type === type.id
-                      ? 'border-primary-500 bg-primary-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-[#7c9885] bg-[#7c9885]/10'
+                      : 'border-[#e8e4de] hover:border-[#7c9885]/50'
                   }`}
                 >
                   <span className="text-lg">{type.icon}</span>
-                  <p className="text-xs mt-1">{type.name}</p>
+                  <p className="text-xs mt-1 text-[#5c5c57]">{type.name}</p>
                 </button>
               ))}
             </div>
@@ -443,7 +444,7 @@ function LinkCard({
                 value={editData.embedUrl}
                 onChange={(e) => setEditData({ ...editData, embedUrl: e.target.value, url: e.target.value })}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-[#6b6b66] mt-1">
                 This will be embedded directly on your profile
               </p>
             </div>
@@ -458,11 +459,12 @@ function LinkCard({
                 embedUrl: editData.type !== 'link' ? editData.embedUrl : null,
               })}
               isLoading={isLoading}
+              className="bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl"
             >
               <Check className="w-4 h-4 mr-2" />
               Save
             </Button>
-            <Button size="sm" variant="outline" onClick={onCancelEdit}>
+            <Button size="sm" variant="outline" onClick={onCancelEdit} className="rounded-xl border-[#e8e4de] text-[#2d3029] hover:bg-[#f5f2ed] hover:border-[#7c9885]">
               <X className="w-4 h-4 mr-2" />
               Cancel
             </Button>
@@ -473,30 +475,30 @@ function LinkCard({
   }
 
   return (
-    <Card className={!link.isActive ? 'opacity-60' : ''}>
+    <Card className={`border-[#e8e4de] bg-white ${!link.isActive ? 'opacity-60' : ''}`}>
       <CardContent className="p-3 sm:p-4">
         {/* Mobile Layout */}
         <div className="sm:hidden">
           <div className="flex items-start gap-2">
             <GripVertical
-              className={`w-5 h-5 text-gray-400 shrink-0 mt-1 ${
+              className={`w-5 h-5 text-[#a8a8a3] shrink-0 mt-1 ${
                 isDragging ? 'cursor-grabbing' : 'cursor-grab'
               }`}
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <span title={linkType.name}>{linkType.icon}</span>
-                <p className="font-medium truncate text-sm">{link.title}</p>
+                <p className="font-medium truncate text-sm text-[#2d3029]">{link.title}</p>
               </div>
-              <p className="text-xs text-gray-500 truncate mb-2">{link.url}</p>
+              <p className="text-xs text-[#6b6b66] truncate mb-2">{link.url}</p>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">{link.clicks} clicks</span>
+                <span className="text-xs text-[#6b6b66]">{link.clicks} clicks</span>
                 <div className="flex items-center gap-1">
                   <Button
                     size="icon"
                     variant="ghost"
                     onClick={onToggleActive}
-                    className="h-8 w-8"
+                    className="h-8 w-8 text-[#5c5c57] hover:text-[#2d3029] hover:bg-[#f5f2ed]"
                   >
                     {link.isActive ? (
                       <Eye className="w-4 h-4" />
@@ -504,11 +506,11 @@ function LinkCard({
                       <EyeOff className="w-4 h-4" />
                     )}
                   </Button>
-                  <Button size="icon" variant="ghost" onClick={onEdit} className="h-8 w-8">
+                  <Button size="icon" variant="ghost" onClick={onEdit} className="h-8 w-8 text-[#5c5c57] hover:text-[#2d3029] hover:bg-[#f5f2ed]">
                     <Edit2 className="w-4 h-4" />
                   </Button>
                   <a href={link.url} target="_blank" rel="noopener noreferrer">
-                    <Button size="icon" variant="ghost" className="h-8 w-8">
+                    <Button size="icon" variant="ghost" className="h-8 w-8 text-[#5c5c57] hover:text-[#2d3029] hover:bg-[#f5f2ed]">
                       <ExternalLink className="w-4 h-4" />
                     </Button>
                   </a>
@@ -516,7 +518,7 @@ function LinkCard({
                     size="icon"
                     variant="ghost"
                     onClick={onDelete}
-                    className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
+                    className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -529,18 +531,18 @@ function LinkCard({
         {/* Desktop Layout */}
         <div className="hidden sm:flex items-center gap-4">
           <GripVertical
-            className={`w-5 h-5 text-gray-400 ${
+            className={`w-5 h-5 text-[#a8a8a3] ${
               isDragging ? 'cursor-grabbing' : 'cursor-grab'
             }`}
           />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <span title={linkType.name}>{linkType.icon}</span>
-              <p className="font-medium truncate">{link.title}</p>
+              <p className="font-medium truncate text-[#2d3029]">{link.title}</p>
             </div>
-            <p className="text-sm text-gray-500 truncate">{link.url}</p>
+            <p className="text-sm text-[#6b6b66] truncate">{link.url}</p>
           </div>
-          <div className="flex items-center gap-1 text-sm text-gray-500 shrink-0">
+          <div className="flex items-center gap-1 text-sm text-[#6b6b66] shrink-0">
             <span>{link.clicks} clicks</span>
           </div>
           <div className="flex items-center gap-1 shrink-0">
@@ -549,6 +551,7 @@ function LinkCard({
               variant="ghost"
               onClick={onToggleActive}
               title={link.isActive ? 'Hide link' : 'Show link'}
+              className="text-[#5c5c57] hover:text-[#2d3029] hover:bg-[#f5f2ed]"
             >
               {link.isActive ? (
                 <Eye className="w-4 h-4" />
@@ -556,11 +559,11 @@ function LinkCard({
                 <EyeOff className="w-4 h-4" />
               )}
             </Button>
-            <Button size="icon" variant="ghost" onClick={onEdit}>
+            <Button size="icon" variant="ghost" onClick={onEdit} className="text-[#5c5c57] hover:text-[#2d3029] hover:bg-[#f5f2ed]">
               <Edit2 className="w-4 h-4" />
             </Button>
             <a href={link.url} target="_blank" rel="noopener noreferrer">
-              <Button size="icon" variant="ghost">
+              <Button size="icon" variant="ghost" className="text-[#5c5c57] hover:text-[#2d3029] hover:bg-[#f5f2ed]">
                 <ExternalLink className="w-4 h-4" />
               </Button>
             </a>
@@ -568,7 +571,7 @@ function LinkCard({
               size="icon"
               variant="ghost"
               onClick={onDelete}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-red-500 hover:text-red-600 hover:bg-red-50"
             >
               <Trash2 className="w-4 h-4" />
             </Button>

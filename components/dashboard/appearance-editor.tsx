@@ -185,17 +185,17 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
       {/* Settings */}
       <div className="space-y-6">
         {/* Profile Info */}
-        <Card>
+        <Card className="border-[#e8e4de] bg-white">
           <CardHeader>
-            <CardTitle>Profile</CardTitle>
+            <CardTitle className="text-[#2d3029]">Profile</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Profile Image Upload */}
             <div>
-              <label className="block text-sm font-medium mb-2">Profile Picture</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Profile Picture</label>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div
-                  className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center cursor-pointer group shrink-0"
+                  className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-[#f5f2ed] to-[#e8e4de] flex items-center justify-center cursor-pointer group shrink-0"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   {settings.image ? (
@@ -205,7 +205,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <Camera className="w-8 h-8 text-gray-400" />
+                    <Camera className="w-8 h-8 text-[#a8a8a3]" />
                   )}
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <Camera className="w-6 h-6 text-white" />
@@ -224,6 +224,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                     size="sm"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploadingImage}
+                    className="rounded-xl border-[#e8e4de] text-[#2d3029] hover:bg-[#f5f2ed] hover:border-[#7c9885]"
                   >
                     {isUploadingImage ? 'Uploading...' : 'Upload Image'}
                   </Button>
@@ -232,7 +233,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                       variant="ghost"
                       size="sm"
                       onClick={() => setSettings({ ...settings, image: '' })}
-                      className="text-red-600 hover:text-red-700"
+                      className="text-red-500 hover:text-red-600 hover:bg-red-50"
                     >
                       Remove
                     </Button>
@@ -241,7 +242,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Display Name</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Display Name</label>
               <Input
                 value={settings.title}
                 onChange={(e) => setSettings({ ...settings, title: e.target.value })}
@@ -249,7 +250,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Bio</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Bio</label>
               <Input
                 value={settings.bio}
                 onChange={(e) => setSettings({ ...settings, bio: e.target.value })}
@@ -260,9 +261,9 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
         </Card>
 
         {/* Social Links */}
-        <Card>
+        <Card className="border-[#e8e4de] bg-white">
           <CardHeader>
-            <CardTitle>Social Links</CardTitle>
+            <CardTitle className="text-[#2d3029]">Social Links</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-3">
@@ -345,9 +346,9 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
         </Card>
 
         {/* Themes */}
-        <Card>
+        <Card className="border-[#e8e4de] bg-white">
           <CardHeader>
-            <CardTitle>Themes</CardTitle>
+            <CardTitle className="text-[#2d3029]">Themes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 gap-3">
@@ -355,10 +356,10 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                 <button
                   key={theme.id}
                   onClick={() => handleThemeSelect(theme)}
-                  className={`p-4 rounded-lg border-2 transition-all ${
+                  className={`p-4 rounded-xl border-2 transition-all ${
                     settings.theme === theme.id
-                      ? 'border-primary-500 ring-2 ring-primary-200'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-[#7c9885] ring-2 ring-[#7c9885]/20'
+                      : 'border-[#e8e4de] hover:border-[#7c9885]/50'
                   }`}
                   style={{ backgroundColor: theme.bg }}
                 >
@@ -376,9 +377,9 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
         </Card>
 
         {/* Button Style */}
-        <Card>
+        <Card className="border-[#e8e4de] bg-white">
           <CardHeader>
-            <CardTitle>Button Style</CardTitle>
+            <CardTitle className="text-[#2d3029]">Button Style</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-3">
@@ -386,10 +387,10 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                 <button
                   key={style.id}
                   onClick={() => setSettings({ ...settings, buttonStyle: style.id })}
-                  className={`flex-1 min-w-[70px] py-3 px-4 border-2 transition-all ${style.class} ${
+                  className={`flex-1 min-w-[70px] py-3 px-4 border-2 transition-all text-[#2d3029] ${style.class} ${
                     settings.buttonStyle === style.id
-                      ? 'border-primary-500 bg-primary-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-[#7c9885] bg-[#7c9885]/10'
+                      : 'border-[#e8e4de] hover:border-[#7c9885]/50'
                   }`}
                 >
                   {style.name}
@@ -400,11 +401,11 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
         </Card>
 
         {/* Particle Effects */}
-        <Card>
+        <Card className="border-[#e8e4de] bg-white">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-[#2d3029]">
               Particle Effects
-              <span className="text-xs bg-gradient-to-r from-pink-500 to-purple-500 text-white px-2 py-0.5 rounded-full">
+              <span className="text-xs bg-[#c77b58] text-white px-2 py-0.5 rounded-full">
                 New
               </span>
             </CardTitle>
@@ -415,14 +416,14 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                 <button
                   key={effect.id}
                   onClick={() => setSettings({ ...settings, particleEffect: effect.id })}
-                  className={`p-3 rounded-lg border-2 transition-all text-center ${
+                  className={`p-3 rounded-xl border-2 transition-all text-center ${
                     settings.particleEffect === effect.id
-                      ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-[#7c9885] bg-[#7c9885]/10 ring-2 ring-[#7c9885]/20'
+                      : 'border-[#e8e4de] hover:border-[#7c9885]/50'
                   }`}
                 >
                   <div className="text-2xl mb-1">{effect.emoji}</div>
-                  <p className="text-xs font-medium">{effect.name}</p>
+                  <p className="text-xs font-medium text-[#2d3029]">{effect.name}</p>
                 </button>
               ))}
             </div>
@@ -430,12 +431,12 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
         </Card>
 
         {/* Custom Colors - Pro only */}
-        <Card className={!isPro ? 'opacity-75' : ''}>
+        <Card className={`border-[#e8e4de] bg-white ${!isPro ? 'opacity-75' : ''}`}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-[#2d3029]">
               Custom Colors
               {!isPro && (
-                <span className="text-xs bg-primary-100 text-primary-600 px-2 py-1 rounded-full">
+                <span className="text-xs bg-[#7c9885]/20 text-[#7c9885] px-2 py-1 rounded-full">
                   Pro
                 </span>
               )}
@@ -443,7 +444,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Background Color</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Background Color</label>
               <div className="flex gap-2">
                 <input
                   type="color"
@@ -465,7 +466,7 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Button Color</label>
+              <label className="block text-sm font-medium mb-2 text-[#2d3029]">Button Color</label>
               <div className="flex gap-2">
                 <input
                   type="color"
@@ -490,16 +491,16 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
         </Card>
 
         {/* Growth Tools - Pro Feature */}
-        <Card className={!isPro ? 'opacity-75' : ''}>
+        <Card className={`border-[#e8e4de] bg-white ${!isPro ? 'opacity-75' : ''}`}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-[#2d3029]">
               Growth Tools
               {!isPro && (
-                <span className="text-xs bg-primary-100 text-primary-600 px-2 py-1 rounded-full">
+                <span className="text-xs bg-[#7c9885]/20 text-[#7c9885] px-2 py-1 rounded-full">
                   Pro
                 </span>
               )}
-              <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full ml-auto">
+              <span className="text-xs bg-[#c77b58]/20 text-[#c77b58] px-2 py-1 rounded-full ml-auto">
                 New
               </span>
             </CardTitle>
@@ -509,8 +510,8 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <label className="text-sm font-medium">Email Capture</label>
-                  <p className="text-xs text-gray-500">Collect visitor emails</p>
+                  <label className="text-sm font-medium text-[#2d3029]">Email Capture</label>
+                  <p className="text-xs text-[#6b6b66]">Collect visitor emails</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -520,11 +521,11 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                     disabled={!isPro}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600 peer-disabled:opacity-50"></div>
+                  <div className="w-11 h-6 bg-[#e8e4de] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#7c9885]/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#e8e4de] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#7c9885] peer-disabled:opacity-50"></div>
                 </label>
               </div>
               {settings.emailCaptureEnabled && (
-                <div className="space-y-2 pl-4 border-l-2 border-primary-200">
+                <div className="space-y-2 pl-4 border-l-2 border-[#7c9885]/30">
                   <Input
                     value={settings.emailCaptureTitle}
                     onChange={(e) => setSettings({ ...settings, emailCaptureTitle: e.target.value })}
@@ -545,8 +546,8 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <label className="text-sm font-medium">Tip Jar (UPI)</label>
-                  <p className="text-xs text-gray-500">Accept tips via UPI</p>
+                  <label className="text-sm font-medium text-[#2d3029]">Tip Jar (UPI)</label>
+                  <p className="text-xs text-[#6b6b66]">Accept tips via UPI</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -556,11 +557,11 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
                     disabled={!isPro}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600 peer-disabled:opacity-50"></div>
+                  <div className="w-11 h-6 bg-[#e8e4de] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#7c9885]/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#e8e4de] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#7c9885] peer-disabled:opacity-50"></div>
                 </label>
               </div>
               {settings.tipJarEnabled && (
-                <div className="space-y-2 pl-4 border-l-2 border-primary-200">
+                <div className="space-y-2 pl-4 border-l-2 border-[#7c9885]/30">
                   <Input
                     value={settings.tipJarUpiId}
                     onChange={(e) => setSettings({ ...settings, tipJarUpiId: e.target.value })}
@@ -579,16 +580,16 @@ export function AppearanceEditor({ profile, user, links, isPro }: AppearanceEdit
           </CardContent>
         </Card>
 
-        <Button onClick={handleSave} isLoading={isLoading} className="w-full">
+        <Button onClick={handleSave} isLoading={isLoading} className="w-full bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl">
           Save Changes
         </Button>
       </div>
 
       {/* Preview */}
       <div className="lg:sticky lg:top-8">
-        <Card>
+        <Card className="border-[#e8e4de] bg-white">
           <CardHeader>
-            <CardTitle>Preview</CardTitle>
+            <CardTitle className="text-[#2d3029]">Preview</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex justify-center">

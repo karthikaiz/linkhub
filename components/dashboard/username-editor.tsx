@@ -108,40 +108,40 @@ export function UsernameEditor({ currentUsername }: UsernameEditorProps) {
   const isValid = validateUsername(username)
 
   return (
-    <Card>
+    <Card className="border-[#e8e4de] bg-white">
       <CardHeader>
-        <CardTitle>Your LinkHub URL</CardTitle>
-        <CardDescription>Customize your unique profile link</CardDescription>
+        <CardTitle className="text-[#2d3029]">Your LinkHub URL</CardTitle>
+        <CardDescription className="text-[#6b6b66]">Customize your unique profile link</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* URL Preview */}
-        <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-          <span className="text-gray-500 text-sm shrink-0">{appUrl.replace('https://', '')}/</span>
+        <div className="flex items-center gap-2 p-3 bg-[#f9f9f7] rounded-xl border border-[#e8e4de]">
+          <span className="text-[#6b6b66] text-sm shrink-0">{appUrl.replace('https://', '')}/</span>
           <Input
             value={username}
             onChange={(e) => handleUsernameChange(e.target.value)}
-            className="flex-1 border-0 bg-transparent p-0 font-medium focus-visible:ring-0"
+            className="flex-1 border-0 bg-transparent p-0 font-medium text-[#2d3029] focus-visible:ring-0"
             placeholder="yourname"
           />
           <button
             onClick={copyToClipboard}
-            className="p-2 hover:bg-gray-200 rounded transition-colors"
+            className="p-2 hover:bg-[#f5f2ed] rounded-lg transition-colors"
             title="Copy link"
           >
             {copied ? (
-              <Check className="w-4 h-4 text-green-500" />
+              <Check className="w-4 h-4 text-[#7c9885]" />
             ) : (
-              <Copy className="w-4 h-4 text-gray-500" />
+              <Copy className="w-4 h-4 text-[#6b6b66]" />
             )}
           </button>
           <a
             href={profileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 hover:bg-gray-200 rounded transition-colors"
+            className="p-2 hover:bg-[#f5f2ed] rounded-lg transition-colors"
             title="Open profile"
           >
-            <ExternalLink className="w-4 h-4 text-gray-500" />
+            <ExternalLink className="w-4 h-4 text-[#6b6b66]" />
           </a>
         </div>
 
@@ -154,10 +154,10 @@ export function UsernameEditor({ currentUsername }: UsernameEditorProps) {
               </p>
             )}
             {isValid && isChecking && (
-              <p className="text-gray-500">Checking availability...</p>
+              <p className="text-[#6b6b66]">Checking availability...</p>
             )}
             {isValid && !isChecking && isAvailable === true && username !== currentUsername && (
-              <p className="text-green-500">Username is available!</p>
+              <p className="text-[#7c9885]">Username is available!</p>
             )}
             {isValid && !isChecking && isAvailable === false && (
               <p className="text-red-500">Username is already taken</p>
@@ -171,7 +171,7 @@ export function UsernameEditor({ currentUsername }: UsernameEditorProps) {
             onClick={handleSave}
             disabled={!isValid || !isAvailable || isLoading}
             isLoading={isLoading}
-            className="w-full"
+            className="w-full bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl"
           >
             Save New Username
           </Button>

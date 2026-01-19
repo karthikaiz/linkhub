@@ -161,7 +161,12 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
 
   return (
     <>
-      <Button onClick={handleClick} isLoading={isLoading} variant={isPro ? 'outline' : 'default'}>
+      <Button
+        onClick={handleClick}
+        isLoading={isLoading}
+        variant={isPro ? 'outline' : 'default'}
+        className={isPro ? 'rounded-xl border-[#e8e4de] text-[#2d3029] hover:bg-[#f5f2ed] hover:border-[#7c9885]' : 'bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl'}
+      >
         {isPro ? 'Manage Subscription' : 'Upgrade to Pro'}
       </Button>
 
@@ -175,27 +180,27 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
           />
 
           {/* Modal */}
-          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 p-6">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 border border-[#e8e4de]">
             <button
               onClick={() => setShowManageModal(false)}
-              className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100"
+              className="absolute top-4 right-4 p-1 rounded-full hover:bg-[#f5f2ed] text-[#6b6b66]"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <h2 className="text-xl font-bold mb-4">Manage Subscription</h2>
+            <h2 className="text-xl font-bold mb-4 text-[#2d3029]">Manage Subscription</h2>
 
             <div className="space-y-4">
               {/* Current Plan */}
-              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+              <div className="p-4 bg-[#7c9885]/10 rounded-xl border border-[#7c9885]/30">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-green-600 font-semibold">Pro Plan</span>
-                  <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">
+                  <span className="text-[#7c9885] font-semibold">Pro Plan</span>
+                  <span className="bg-[#7c9885]/20 text-[#7c9885] text-xs px-2 py-0.5 rounded-full">
                     Active
                   </span>
                 </div>
                 {subscriptionEndDate && (
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-[#6b6b66]">
                     Next billing: {formatDate(subscriptionEndDate)}
                   </p>
                 )}
@@ -203,8 +208,8 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
 
               {/* Features */}
               <div>
-                <p className="text-sm font-medium text-gray-700 mb-2">Your Pro benefits:</p>
-                <ul className="text-sm text-gray-600 space-y-1">
+                <p className="text-sm font-medium text-[#2d3029] mb-2">Your Pro benefits:</p>
+                <ul className="text-sm text-[#6b6b66] space-y-1">
                   <li>• Unlimited links</li>
                   <li>• Custom themes & colors</li>
                   <li>• Advanced analytics</li>
@@ -213,15 +218,15 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
               </div>
 
               {/* Cancel Section */}
-              <div className="pt-4 border-t">
-                <p className="text-sm text-gray-500 mb-3">
+              <div className="pt-4 border-t border-[#e8e4de]">
+                <p className="text-sm text-[#6b6b66] mb-3">
                   If you cancel, you&apos;ll still have Pro access until your current billing period ends.
                 </p>
                 <Button
                   variant="outline"
                   onClick={handleCancelSubscription}
                   isLoading={isCancelling}
-                  className="w-full text-red-600 border-red-200 hover:bg-red-50"
+                  className="w-full text-red-500 border-red-200 hover:bg-red-50 rounded-xl"
                 >
                   Cancel Subscription
                 </Button>
