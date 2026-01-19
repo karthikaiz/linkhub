@@ -117,6 +117,7 @@ export async function POST(request: Request) {
       case 'payment.captured': {
         // One-time payment captured (for non-subscription payments)
         const payment = event.payload.payment.entity
+        console.log('Payment captured event:', JSON.stringify(payment, null, 2))
 
         // If this is a one-time Pro plan payment (not subscription)
         if (payment.notes?.userId && payment.notes?.plan === 'pro') {
@@ -137,8 +138,43 @@ export async function POST(request: Request) {
         break
       }
 
+      case 'order.paid': {
+        // Order paid event (triggered when UPI/QR payment completes)
+        const order = event.payload.order.entity
+        const payment = event.payload.payment.entity
+        console.log('Order paid event:', JSON.stringify({ order, payment }, null, 2))
+
+        // Check notes from order or payment
+        const notes = order.notes || payment.notes
+        if (notes?.userId && notes?.plan === 'pro') {
+          const subscriptionEndDate = new Date()
+          subscriptionEndDate.setMonth(subscriptionEndDate.getMonth() + 1)
+
+          await db.user.update({
+            where: { id: notes.userId },
+            data: {
+              razorpayCustomerId: payment.id,
+              razorpayPlanId: `pro_${payment.currency || order.currency}`,
+              subscriptionEndDate,
+            },
+          })
+
+          console.log(`Order paid - Pro activated for user ${notes.userId}`)
+        }
+        break
+      }
+
+      case 'payment.authorized': {
+        // Payment authorized (for UPI payments, this comes before captured)
+        const payment = event.payload.payment.entity
+        console.log('Payment authorized event:', JSON.stringify(payment, null, 2))
+        // Usually just log this - wait for payment.captured
+        break
+      }
+
       default:
         console.log(`Unhandled event type: ${eventType}`)
+        console.log('Event payload:', JSON.stringify(event.payload, null, 2))
     }
 
     return NextResponse.json({ received: true })

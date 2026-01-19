@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import toast from 'react-hot-toast'
-import { X } from 'lucide-react'
+import { X, RefreshCw } from 'lucide-react'
 
 interface SubscriptionButtonProps {
   isPro: boolean
@@ -21,6 +21,8 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
   const [isLoading, setIsLoading] = useState(false)
   const [showManageModal, setShowManageModal] = useState(false)
   const [isCancelling, setIsCancelling] = useState(false)
+  const [showPaymentPendingModal, setShowPaymentPendingModal] = useState(false)
+  const [isCheckingStatus, setIsCheckingStatus] = useState(false)
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -131,11 +133,13 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
           plan: 'pro',
         },
         theme: {
-          color: '#000000',
+          color: '#7c9885',
         },
         modal: {
           ondismiss: function () {
             setIsLoading(false)
+            // Show payment pending modal in case user paid via UPI but closed the modal
+            setShowPaymentPendingModal(true)
           },
         },
       }
@@ -148,6 +152,28 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
       toast.error(error.message || 'Failed to start checkout')
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const checkPaymentStatus = async () => {
+    setIsCheckingStatus(true)
+    try {
+      // Simply reload the page - if the webhook processed the payment,
+      // the user's subscription status will be updated
+      const response = await fetch('/api/user/subscription-status')
+      const data = await response.json()
+
+      if (data.isPro) {
+        toast.success('Payment confirmed! Welcome to Pro!')
+        setTimeout(() => window.location.reload(), 1000)
+      } else {
+        toast.error('Payment not yet received. Please wait a moment and try again.')
+      }
+    } catch (error) {
+      // Just reload the page as a fallback
+      window.location.reload()
+    } finally {
+      setIsCheckingStatus(false)
     }
   }
 
@@ -232,6 +258,55 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
                 </Button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Pending Modal - shown after UPI payment modal is closed */}
+      {showPaymentPendingModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setShowPaymentPendingModal(false)}
+          />
+
+          {/* Modal */}
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 border border-[#e8e4de]">
+            <button
+              onClick={() => setShowPaymentPendingModal(false)}
+              className="absolute top-4 right-4 p-1 rounded-full hover:bg-[#f5f2ed] text-[#6b6b66]"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <h2 className="text-xl font-bold mb-2 text-[#2d3029]">Did you complete the payment?</h2>
+            <p className="text-[#6b6b66] mb-6">
+              If you paid via UPI or QR code, it may take a few seconds for us to receive the confirmation.
+            </p>
+
+            <div className="space-y-3">
+              <Button
+                onClick={checkPaymentStatus}
+                isLoading={isCheckingStatus}
+                className="w-full bg-[#7c9885] hover:bg-[#6b8872] text-white rounded-xl"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Check Payment Status
+              </Button>
+
+              <Button
+                variant="outline"
+                onClick={() => setShowPaymentPendingModal(false)}
+                className="w-full rounded-xl border-[#e8e4de] text-[#6b6b66] hover:bg-[#f5f2ed]"
+              >
+                I haven&apos;t paid yet
+              </Button>
+            </div>
+
+            <p className="text-xs text-[#a8a8a3] mt-4 text-center">
+              If payment was successful but not reflecting, please wait 1-2 minutes and refresh the page.
+            </p>
           </div>
         </div>
       )}
