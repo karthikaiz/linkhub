@@ -4,20 +4,39 @@ import { db } from '@/lib/db'
 import crypto from 'crypto'
 
 export async function POST(request: Request) {
+  console.log('=== RAZORPAY WEBHOOK RECEIVED ===')
+
   try {
     const body = await request.text()
+    console.log('Webhook body received, length:', body.length)
+
     const headersList = await headers()
     const signature = headersList.get('x-razorpay-signature') as string
+    console.log('Signature present:', !!signature)
 
     // Verify webhook signature
-    const secret = process.env.RAZORPAY_WEBHOOK_SECRET!
+    const secret = process.env.RAZORPAY_WEBHOOK_SECRET
+    console.log('Webhook secret configured:', !!secret)
+
+    if (!secret) {
+      console.error('RAZORPAY_WEBHOOK_SECRET not configured!')
+      return NextResponse.json(
+        { error: 'Webhook secret not configured' },
+        { status: 500 }
+      )
+    }
+
     const expectedSignature = crypto
       .createHmac('sha256', secret)
       .update(body)
       .digest('hex')
 
+    console.log('Signature match:', signature === expectedSignature)
+
     if (signature !== expectedSignature) {
       console.error('Webhook signature verification failed')
+      console.error('Received:', signature)
+      console.error('Expected:', expectedSignature)
       return NextResponse.json(
         { error: 'Invalid signature' },
         { status: 400 }
