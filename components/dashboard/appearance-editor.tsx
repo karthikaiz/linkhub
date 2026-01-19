@@ -57,6 +57,7 @@ interface AppearanceEditorProps {
 const themes = [
   { id: 'light', name: 'Light', bg: '#ffffff', btn: '#000000', text: '#ffffff', particles: 'none', btnStyle: 'rounded' },
   { id: 'dark', name: 'Dark', bg: '#1a1a2e', btn: '#ffffff', text: '#000000', particles: 'none', btnStyle: 'rounded' },
+  { id: 'earthy', name: 'Earthy', bg: '#fdfbf7', btn: '#7c9885', text: '#ffffff', particles: 'none', btnStyle: 'soft' },
   { id: 'neon', name: 'Neon', bg: '#0a0a0a', btn: '#00ff88', text: '#000000', particles: 'stars', btnStyle: 'glass' },
   { id: 'pastel', name: 'Pastel', bg: '#ffeef8', btn: '#ffb6c1', text: '#4a4a4a', particles: 'hearts', btnStyle: 'soft' },
   { id: 'y2k', name: 'Y2K', bg: '#ff00ff', btn: '#00ffff', text: '#000000', particles: 'stars', btnStyle: 'glass' },
@@ -65,6 +66,7 @@ const themes = [
   { id: 'ocean', name: 'Ocean', bg: '#0077b6', btn: '#ffffff', text: '#0077b6', particles: 'bubbles', btnStyle: 'rounded' },
   { id: 'forest', name: 'Forest', bg: '#2d6a4f', btn: '#ffffff', text: '#2d6a4f', particles: 'none', btnStyle: 'soft' },
   { id: 'snow', name: 'Snow', bg: '#1a1a2e', btn: '#ffffff', text: '#1a1a2e', particles: 'snow', btnStyle: 'glass' },
+  { id: 'terracotta', name: 'Terracotta', bg: '#f5f0eb', btn: '#c77b58', text: '#ffffff', particles: 'none', btnStyle: 'soft' },
 ]
 
 const particleEffects = [
