@@ -35,16 +35,22 @@ export async function POST(request: Request) {
       case 'subscription.charged': {
         // Subscription payment successful
         const subscription = event.payload.subscription.entity
-        const payment = event.payload.payment.entity
+        const payment = event.payload.payment?.entity
+
+        console.log('Subscription event details:', {
+          subscriptionId: subscription.id,
+          subscriptionNotes: subscription.notes,
+          paymentNotes: payment?.notes,
+          customerId: subscription.customer_id,
+        })
 
         // Find user by subscription ID or payment notes
+        const userId = subscription.notes?.userId || payment?.notes?.userId
         const user = await db.user.findFirst({
           where: {
             OR: [
               { razorpaySubscriptionId: subscription.id },
-              {
-                id: subscription.notes?.userId || payment.notes?.userId,
-              },
+              ...(userId ? [{ id: userId }] : []),
             ],
           },
         })
@@ -64,6 +70,8 @@ export async function POST(request: Request) {
           })
 
           console.log(`Subscription activated for user ${user.id}`)
+        } else {
+          console.error(`No user found for subscription ${subscription.id}, notes:`, subscription.notes)
         }
         break
       }

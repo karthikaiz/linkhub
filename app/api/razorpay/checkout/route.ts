@@ -65,6 +65,7 @@ export async function POST() {
           userId: user.id,
           email: user.email || '',
           name: user.name || '',
+          plan: 'pro',
         },
       })
 

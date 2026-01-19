@@ -58,6 +58,39 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
     }
   }
 
+  // Poll for payment status in background
+  const startPaymentPolling = () => {
+    let pollCount = 0
+    const maxPolls = 60 // Poll for max 2 minutes (60 * 2 seconds)
+
+    const pollInterval = setInterval(async () => {
+      pollCount++
+      console.log(`Polling for payment status... (attempt ${pollCount})`)
+
+      try {
+        const response = await fetch('/api/user/subscription-status')
+        const data = await response.json()
+
+        if (data.isPro) {
+          console.log('Payment confirmed via polling!')
+          clearInterval(pollInterval)
+          toast.success('Payment successful! Welcome to Pro!')
+          setTimeout(() => window.location.reload(), 1000)
+        }
+      } catch (error) {
+        console.log('Polling error:', error)
+        // Silently fail - we'll keep polling
+      }
+
+      // Stop after max attempts
+      if (pollCount >= maxPolls) {
+        clearInterval(pollInterval)
+      }
+    }, 2000) // Check every 2 seconds (more frequent for UPI)
+
+    return pollInterval
+  }
+
   const handleClick = async () => {
     if (isPro) {
       setShowManageModal(true)
@@ -65,6 +98,8 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
     }
 
     setIsLoading(true)
+    let pollingInterval: NodeJS.Timeout | null = null
+
     try {
       // Load Razorpay script
       const scriptLoaded = await loadRazorpayScript()
@@ -88,6 +123,9 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
         throw new Error(data.error || 'Something went wrong')
       }
 
+      // Start polling for payment status (for UPI payments that complete outside modal)
+      pollingInterval = startPaymentPolling()
+
       // Configure Razorpay checkout options
       const options = {
         key: data.keyId,
@@ -99,6 +137,9 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
         description: 'Pro Plan Subscription',
         image: '/logo.png', // Add your logo
         handler: async function (response: any) {
+          // Stop polling since handler was called
+          if (pollingInterval) clearInterval(pollingInterval)
+
           try {
             // Verify payment on server
             const verifyResponse = await fetch('/api/razorpay/verify', {
@@ -282,7 +323,7 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
 
             <h2 className="text-xl font-bold mb-2 text-[#2d3029]">Did you complete the payment?</h2>
             <p className="text-[#6b6b66] mb-6">
-              If you paid via UPI or QR code, it may take a few seconds for us to receive the confirmation.
+              If you paid via UPI, PhonePe, or QR code, it may take 10-30 seconds for the payment to be confirmed. We&apos;re checking automatically in the background.
             </p>
 
             <div className="space-y-3">
@@ -305,7 +346,7 @@ export function SubscriptionButton({ isPro, subscriptionEndDate }: SubscriptionB
             </div>
 
             <p className="text-xs text-[#a8a8a3] mt-4 text-center">
-              If payment was successful but not reflecting, please wait 1-2 minutes and refresh the page.
+              UPI payments typically take 10-60 seconds to process. The page will automatically refresh when your payment is confirmed.
             </p>
           </div>
         </div>
